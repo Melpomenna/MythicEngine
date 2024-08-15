@@ -11,7 +11,7 @@ StaticThreadPool::StaticThreadPool()
     : StaticThreadPool(std::thread::hardware_concurrency()) {}
 
 StaticThreadPool::StaticThreadPool(size_t workersCount, RunningTag tag)
-    : workers_(workersCount),workersCount_(workersCount), isRunning_(false) {
+    : workers_(workersCount), workersCount_(workersCount), isRunning_(false) {
   if (tag == RunningTag::RunAtInit) {
     CreateWorkers();
   }
@@ -87,8 +87,8 @@ void MYTHIC_ENGINE_WIN_API StaticThreadPool::CreateWorkers() {
   for (auto i = 0UL; i < workersCount_; ++i) {
     std::function handler{[this]() noexcept { MainThreadWork(); }};
     using FunctionType = functions::Function<void()>;
-    memory::OwnPtr function = memory::MakeOwn<IRunnable, FunctionType>(
-        support::utils::Move(handler));
+    memory::OwnPtr function =
+        memory::MakeOwn<IRunnable, FunctionType>(support::utils::Move(handler));
     workers_[i].RunTask(support::utils::Move(function));
   }
 }

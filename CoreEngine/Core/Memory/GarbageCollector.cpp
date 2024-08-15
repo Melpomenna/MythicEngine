@@ -3,9 +3,7 @@
 
 namespace MythicEngine::core::memory {
 
-GarbageCollector::~GarbageCollector() {
-  pointers_.clear();
-}
+GarbageCollector::~GarbageCollector() { pointers_.clear(); }
 
 void MYTHIC_ENGINE_WIN_API GarbageCollector::Release() {
   ::delete gc_;
@@ -36,7 +34,7 @@ void MYTHIC_ENGINE_WIN_API GarbageCollector::UnMark(void *ptr) noexcept {
 
 void MYTHIC_ENGINE_WIN_API GarbageCollector::Schedule(float dt) noexcept {
   currentTime_ += dt;
-  if (std::abs(DefaultTimeForSchedule-currentTime_) >= 0.0001) {
+  if (std::abs(DefaultTimeForSchedule - currentTime_) >= 0.0001) {
     currentTime_ = 0;
   }
 }

@@ -76,8 +76,7 @@ void MYTHIC_ENGINE_WIN_API Thread::RunTask(RunnableType &&task) {
 void MYTHIC_ENGINE_WIN_API Thread::TryJoin() { worker_.join(); }
 
 void Thread::SafeJoin() {
-  if (state_ == ThreadState::Detach ||
-      state_ == ThreadState::NoWork)
+  if (state_ == ThreadState::Detach || state_ == ThreadState::NoWork)
     return;
 
   std::unique_lock lock{mt_};

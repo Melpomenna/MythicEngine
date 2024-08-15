@@ -117,7 +117,7 @@ UnboundingMPMCQueue<T>::TopAndRemove() {
   }
   ValueType value = container_.front();
   container_.pop();
-  return support::utils::Move(value);
+  return support::utils::MoveIfNoexcept(value);
 }
 
 template <class T> bool UnboundingMPMCQueue<T>::IsEmpty() const noexcept {

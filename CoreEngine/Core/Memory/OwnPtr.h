@@ -15,12 +15,12 @@ public:
   using PointerType = T *;
 
   MYTHIC_ENGINE_EXPORT OwnPtr();
-  MYTHIC_ENGINE_EXPORT explicit
-  OwnPtr(PointerType, MemoryOrderType type = MemoryOrderType::Owner);
+  MYTHIC_ENGINE_EXPORT explicit OwnPtr(
+      PointerType, MemoryOrderType type = MemoryOrderType::Owner);
 
   template <class Inhereted> MYTHIC_ENGINE_EXPORT explicit OwnPtr(Inhereted *);
 
-  MYTHIC_ENGINE_EXPORT  ~OwnPtr();
+  MYTHIC_ENGINE_EXPORT ~OwnPtr();
 
   MYTHIC_ENGINE_EXPORT OwnPtr(const OwnPtr &);
   MYTHIC_ENGINE_EXPORT OwnPtr &operator=(const OwnPtr &);

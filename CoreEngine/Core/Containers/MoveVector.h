@@ -44,8 +44,10 @@ public:
     const T &&operator*() const;
 
     T *operator->() const noexcept;
+
   private:
-    explicit Iterator(T*, size_t);
+    explicit Iterator(T *, size_t);
+
   private:
     T *ptr_;
     size_t shift_;
@@ -351,8 +353,8 @@ bool MYTHIC_ENGINE_WIN_API MoveVector<T, Allocator>::TryResize() noexcept {
   try {
     if (capacity_ == 0) {
       capacity_ = 1;
-      PointerType ptr = static_cast<PointerType>(
-        allocator_.Allocate(capacity_ * sizeOfType));
+      PointerType ptr =
+          static_cast<PointerType>(allocator_.Allocate(capacity_ * sizeOfType));
       allocator_.Construct(ptr);
       data_ = ptr;
       return true;
@@ -412,10 +414,9 @@ MoveVector<T, Allocator>::Iterator::~Iterator() {
   shift_ = 0;
 }
 
-template<class T, class Allocator>
-MoveVector<T,Allocator>::Iterator::Iterator(T* ptr, size_t shift) : ptr_(ptr), shift_(shift)  {
-
-}
+template <class T, class Allocator>
+MoveVector<T, Allocator>::Iterator::Iterator(T *ptr, size_t shift)
+    : ptr_(ptr), shift_(shift) {}
 
 template <class T, class Allocator>
 MoveVector<T, Allocator>::Iterator::Iterator(const Iterator &other) noexcept {
