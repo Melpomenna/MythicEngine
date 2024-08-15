@@ -359,7 +359,7 @@ template <class T, class Allocator>
 bool MYTHIC_ENGINE_WIN_API MoveVector<T, Allocator>::TryResize() noexcept {
   try {
     PointerType ptr = static_cast<PointerType>(
-        allocator_.Allocate(capacity_ * capacityMultiplier_));
+        allocator_.Allocate(capacity_ * capacityMultiplier_ * sizeOfType));
     for (SizeType i = 0; i < size_; ++i) {
       allocator_.Construct(ptr + i, support::utils::Move(*(data_ + i)));
       allocator_.Destroy(data_ + i);
@@ -380,7 +380,7 @@ MoveVector<T, Allocator>::TryResize(SizeType size) noexcept {
   try {
     if (capacity_ >= size)
       return false;
-    void *ptr = allocator_.Allocate(size);
+    void *ptr = allocator_.Allocate(size * sizeOfType);
     if (data_ == nullptr) {
       data_ = ptr;
       capacity_ = size;

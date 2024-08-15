@@ -1,11 +1,11 @@
-#include <pch.h>
+﻿#include <pch.h>
 #include "Timer.h"
 #include <Support/Utils/IUpdateHandler.h>
 
-#include <algorithm>
-
-namespace MythicEngine::support::utils {
-Timer::Timer() : last_(std::chrono::steady_clock::now()) {}
+namespace MythicEngine::core::time {
+Timer::Timer() : last_(std::chrono::steady_clock::now()) {
+  handlers_ = std::list<memory::OwnPtr<support::utils::IUpdateHandler>>();
+}
 
 float MYTHIC_ENGINE_WIN_API Timer::Mark() {
   const auto old = last_.load();
@@ -20,16 +20,17 @@ float MYTHIC_ENGINE_WIN_API Timer::Peek() const {
       .count();
 }
 
-void MYTHIC_ENGINE_WIN_API Timer::AddHandler(IUpdateHandlerPtr handler) {
+void MYTHIC_ENGINE_WIN_API Timer::AddHandler(const IUpdateHandlerPtr &handler) {
   auto it = std::ranges::find_if(
       handlers_.cbegin(), handlers_.cend(),
       [=](const auto &h) { return h && handler && handler == h; });
   if (it == handlers_.cend()) {
-    handlers_.emplace_back(handler);
+    handlers_.push_back(handler);
   }
 }
 
-void MYTHIC_ENGINE_WIN_API Timer::RemoveHandler(IUpdateHandlerPtr handler) {
+void MYTHIC_ENGINE_WIN_API
+Timer::RemoveHandler(const IUpdateHandlerPtr &handler) {
   auto it = std::ranges::find_if(
       handlers_.cbegin(), handlers_.cend(),
       [=](const auto &h) { return h && handler && handler == h; });
@@ -40,11 +41,13 @@ void MYTHIC_ENGINE_WIN_API Timer::RemoveHandler(IUpdateHandlerPtr handler) {
 
 void MYTHIC_ENGINE_WIN_API Timer::Post() {
   const auto duration = Peek();
-  Post([duration](auto h) { h->OnUpdate(duration); });
+  Post([duration](auto &h) { h->OnUpdate(duration); });
 }
 
 void MYTHIC_ENGINE_WIN_API Timer::Post(const HandleFuncType &event) {
-  std::ranges::for_each(handlers_.cbegin(), handlers_.cend(), event);
+  for (auto &h : handlers_) {
+    event(h);
+  }
 }
 
-} // namespace MythicEngine::support::utils
+} // namespace MythicEngine::core::time

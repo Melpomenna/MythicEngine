@@ -21,3 +21,10 @@
 #define __CONSTEXPR__ constexpr
 
 #define __INLINE__ inline
+
+#define MYTHIC_ENGINE_DEFAULT_CONSTRUCT_AND_OPERATORS(__CLASS__)               \
+  __CLASS__() = default;                                                       \
+  __CLASS__(const __CLASS__ &) = default;                                      \
+  __CLASS__ &operator=(const __CLASS__ &) = default;                           \
+  __CLASS__(__CLASS__ &&) noexcept = default;                                  \
+  __CLASS__ &operator=(__CLASS__ &&) noexcept = default;

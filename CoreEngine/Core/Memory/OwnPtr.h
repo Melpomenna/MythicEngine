@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <Core/Memory/GarbageCollector.h>
 #include <Support/Utils/TypeTraits.h>
 #include <Support/Utils/Utils.h>
 #include <new>
@@ -14,7 +15,7 @@ public:
   using PointerType = T *;
 
   OwnPtr();
-  explicit OwnPtr(PointerType);
+  explicit OwnPtr(PointerType, MemoryOrderType type = MemoryOrderType::Owner);
 
   template <class Inhereted> explicit OwnPtr(Inhereted *);
 
@@ -26,11 +27,25 @@ public:
   OwnPtr(OwnPtr &&) noexcept;
   OwnPtr &operator=(OwnPtr &&) noexcept;
 
+  bool operator==(const OwnPtr &) const noexcept;
+  bool operator!=(const OwnPtr &) const noexcept;
+
+  template <class Inhereted> OwnPtr(const OwnPtr<Inhereted> &);
+
+  template <class Inhereted> OwnPtr &operator=(const OwnPtr<Inhereted> &);
+
+  template <class Inhereted> OwnPtr(OwnPtr<Inhereted> &&) noexcept;
+
+  template <class Inhereted> OwnPtr &operator=(OwnPtr<Inhereted> &&) noexcept;
+
   PointerType operator->() const;
 
   operator bool() const noexcept;
 
   MemoryOrderType GetType() const noexcept;
+
+  PointerType Release() noexcept;
+  PointerType Get() const noexcept;
 
 private:
   PointerType pointer_;
@@ -40,11 +55,13 @@ private:
 template <class T>
 OwnPtr<T>::OwnPtr() : pointer_(nullptr), type_(MemoryOrderType::NoPointer) {}
 
-template <class T> OwnPtr<T>::OwnPtr(PointerType other) : OwnPtr() {
+template <class T>
+OwnPtr<T>::OwnPtr(PointerType other, MemoryOrderType type) : OwnPtr() {
   pointer_ = other;
   if (pointer_) {
-    type_ = MemoryOrderType::Owner;
+    type_ = type;
   }
+  GC::ResolveGarbageCollector()->Mark(pointer_);
 }
 
 template <class T> OwnPtr<T>::OwnPtr(const OwnPtr &other) : OwnPtr() {
@@ -60,15 +77,14 @@ OwnPtr<T> &MYTHIC_ENGINE_WIN_API OwnPtr<T>::operator=(const OwnPtr &other) {
     return *this;
 
   if (pointer_ != nullptr && type_ == MemoryOrderType::Owner) {
+    GC::ResolveGarbageCollector()->UnMark(pointer_);
     delete pointer_;
     pointer_ = nullptr;
   }
-
+  type_ = MemoryOrderType::NoPointer;
   pointer_ = other.pointer_;
 
-  if (pointer_ == nullptr) {
-    type_ = MemoryOrderType::NoPointer;
-  } else {
+  if (pointer_) {
     type_ = MemoryOrderType::Parent;
   }
 
@@ -78,6 +94,7 @@ OwnPtr<T> &MYTHIC_ENGINE_WIN_API OwnPtr<T>::operator=(const OwnPtr &other) {
 template <class T> OwnPtr<T>::OwnPtr(OwnPtr &&other) noexcept : OwnPtr() {
   pointer_ = other.pointer_;
   type_ = other.type_;
+  GC::ResolveGarbageCollector()->Mark(pointer_);
   other.pointer_ = nullptr;
   other.type_ = MemoryOrderType::NoPointer;
 }
@@ -88,6 +105,7 @@ OwnPtr<T> &MYTHIC_ENGINE_WIN_API OwnPtr<T>::operator=(OwnPtr &&other) noexcept {
     return *this;
 
   if (pointer_ != nullptr && type_ == MemoryOrderType::Owner) {
+    GC::ResolveGarbageCollector()->UnMark(pointer_);
     delete pointer_;
     pointer_ = nullptr;
   }
@@ -97,6 +115,74 @@ OwnPtr<T> &MYTHIC_ENGINE_WIN_API OwnPtr<T>::operator=(OwnPtr &&other) noexcept {
   other.pointer_ = nullptr;
   other.type_ = MemoryOrderType::NoPointer;
 
+  return *this;
+}
+
+template <class T>
+bool MYTHIC_ENGINE_WIN_API
+OwnPtr<T>::operator==(const OwnPtr &other) const noexcept {
+  return pointer_ == other.Get();
+}
+
+template <class T>
+bool MYTHIC_ENGINE_WIN_API
+OwnPtr<T>::operator!=(const OwnPtr &other) const noexcept {
+  return !(*this == other);
+}
+
+template <class T>
+template <class Inhereted>
+OwnPtr<T>::OwnPtr(OwnPtr<Inhereted> &&other) noexcept : OwnPtr() {
+  static_assert(std::is_convertible_v<Inhereted *, PointerType>);
+  type_ = other.GetType();
+  pointer_ = static_cast<PointerType>(other.Release());
+  GC::ResolveGarbageCollector()->Mark(pointer_);
+}
+
+template <class T>
+template <class Inhereted>
+OwnPtr<T> &MYTHIC_ENGINE_WIN_API
+OwnPtr<T>::operator=(OwnPtr<Inhereted> &&other) noexcept {
+  static_assert(std::is_convertible_v<Inhereted *, PointerType>);
+  if (pointer_ != nullptr && type_ == MemoryOrderType::Owner) {
+    GC::ResolveGarbageCollector()->UnMark(pointer_);
+    delete pointer_;
+    pointer_ = nullptr;
+  }
+
+  type_ = other.GetType();
+  pointer_ = static_cast<PointerType>(other.Release());
+
+  return *this;
+}
+
+template <class T>
+template <class Inhereted>
+OwnPtr<T>::OwnPtr(const OwnPtr<Inhereted> &other) : OwnPtr() {
+  static_assert(std::is_convertible_v<Inhereted *, PointerType>);
+  pointer_ = static_cast<PointerType>(other.Get());
+  if (pointer_) {
+    type_ = MemoryOrderType::Parent;
+  }
+  GC::ResolveGarbageCollector()->Mark(pointer_);
+}
+
+template <class T>
+template <class Inhereted>
+OwnPtr<T> &MYTHIC_ENGINE_WIN_API
+OwnPtr<T>::operator=(const OwnPtr<Inhereted> &other) {
+  static_assert(std::is_convertible_v<Inhereted *, PointerType>);
+  if (pointer_ != nullptr && type_ == MemoryOrderType::Owner) {
+    GC::ResolveGarbageCollector()->UnMark(pointer_);
+    delete pointer_;
+    pointer_ = nullptr;
+  }
+
+  type_ = MemoryOrderType::NoPointer;
+  pointer_ = static_cast<PointerType>(other.Get());
+  if (pointer_) {
+    type_ = MemoryOrderType::Parent;
+  }
   return *this;
 }
 
@@ -108,13 +194,17 @@ OwnPtr<T>::OwnPtr(Inhereted *pointer) : OwnPtr() {
   if (pointer_) {
     type_ = MemoryOrderType::Owner;
   }
+  GC::ResolveGarbageCollector()->Mark(pointer_);
 }
 
 template <class T> OwnPtr<T>::~OwnPtr() {
-  if (type_ == MemoryOrderType::NoPointer || type_ == MemoryOrderType::Parent)
+  if (type_ == MemoryOrderType::NoPointer || type_ == MemoryOrderType::Parent) {
+    pointer_ = nullptr;
+    type_ = MemoryOrderType::NoPointer;
     return;
-
+  }
   if (type_ == MemoryOrderType::Owner) {
+    GC::ResolveGarbageCollector()->UnMark(pointer_);
     delete pointer_;
   }
   pointer_ = nullptr;
@@ -129,13 +219,29 @@ OwnPtr<T>::operator->() const {
 
 template <class T>
 MYTHIC_ENGINE_WIN_API OwnPtr<T>::operator bool() const noexcept {
-  return pointer_ != nullptr;
+  return type_ != MemoryOrderType::NoPointer &&
+         GC::ResolveGarbageCollector()->Contains(pointer_);
 }
 
 template <class T>
 __NODISCARD__ MemoryOrderType MYTHIC_ENGINE_WIN_API
 OwnPtr<T>::GetType() const noexcept {
   return type_;
+}
+
+template <class T>
+__NODISCARD__ typename OwnPtr<T>::PointerType MYTHIC_ENGINE_WIN_API
+OwnPtr<T>::Release() noexcept {
+  PointerType ptr = pointer_;
+  pointer_ = nullptr;
+  type_ = MemoryOrderType::NoPointer;
+  return ptr;
+}
+
+template <class T>
+typename OwnPtr<T>::PointerType MYTHIC_ENGINE_WIN_API
+OwnPtr<T>::Get() const noexcept {
+  return pointer_;
 }
 
 template <class T, class... Args>

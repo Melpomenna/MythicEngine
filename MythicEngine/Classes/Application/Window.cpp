@@ -1,5 +1,6 @@
 ﻿#include "Window.h"
 
+#include <Core/Memory/UniquePtr.h>
 #include <Engine/System/Keyboard/Keyboard.h>
 #include <Engine/System/Mouse/Mouse.h>
 #include <Render/DirectX11/Render.h>
@@ -11,13 +12,15 @@
 #include <sstream>
 
 namespace {
-using DebugLoggerPtr = std::unique_ptr<MythicEngine::support::logger::ILogger>;
-using AsynFileLoggerPtr =
-    std::unique_ptr<MythicEngine::support::logger::AsyncFileLogger>;
+
+namespace memory = MythicEngine::core::memory;
+namespace logger = MythicEngine::support::logger;
+
+using DebugLoggerPtr = memory::UniquePtr<logger::ILogger>;
 const DebugLoggerPtr Logger =
-    std::make_unique<MythicEngine::support::logger::MessageLogger>();
-const AsynFileLoggerPtr AsyncFileLogger =
-    std::make_unique<MythicEngine::support::logger::AsyncFileLogger>(
+    memory::MakeUnique<logger::ILogger, logger::MessageLogger>();
+const DebugLoggerPtr AsyncFileLogger =
+    memory::MakeUnique<logger::ILogger, logger::AsyncFileLogger>(
         "./Logs/log.txt");
 } // namespace
 
@@ -77,9 +80,9 @@ MainWindow::MainWindowImpl::GetInstance() noexcept {
 
 MainWindow::MainWindow(unsigned width, unsigned height, const char *name)
     : width_(width), height_(height), name_(name),
-      keyboard_(std::make_unique<system::keyboard::Keyboard>()),
-      mouse_(std::make_unique<system::mouse::Mouse>()),
-      timer_(std::make_shared<support::utils::Timer>()) {
+      keyboard_(core::memory::MakeOwn<system::keyboard::Keyboard>()),
+      mouse_(core::memory::MakeOwn<system::mouse::Mouse>()),
+      timer_(core::memory::MakeOwn<core::time::Timer>()) {
   RECT wr;
   wr.left = 100;
   wr.right = static_cast<LONG>(width) + wr.left;
@@ -101,7 +104,7 @@ MainWindow::MainWindow(unsigned width, unsigned height, const char *name)
     throw CHWND_EXCEPTION_LAST_ERROR();
   }
 
-  render_ = std::make_unique<render::directx11::DirectX11Render>(timer_, hWnd_);
+  render::directx11::DirectX11Render::ResolveDirectX11Render(timer_, hWnd_);
 
   SetWindowTextA(hWnd_, name_);
   ShowWindow(hWnd_, SW_SHOWDEFAULT);
@@ -130,46 +133,58 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
   switch (msg) {
   case WM_CLOSE: {
     const auto logData = "Exit from application";
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     PostQuitMessage(0);
   }
     return 0;
   case WM_KILLFOCUS: {
     const auto logData = "On Focus Kill";
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     keyboard_->ClearState();
   } break;
   case WM_KEYDOWN:
   case WM_SYSKEYDOWN: {
     if (wParam == VK_ESCAPE) {
       const auto logData = "Pressed escape";
-      AsyncFileLogger->Log(logData);
-      Logger->Log(logData);
+      if (AsyncFileLogger)
+        AsyncFileLogger->Log(logData);
+      if (Logger)
+        Logger->Log(logData);
       PostQuitMessage(0);
       return 0;
     }
     if (keyboard_->AutorepeatIsEnabled() || !(lParam & 0x40000000)) {
       const auto logData =
           std::string("Pressed key:") + static_cast<char>(wParam);
-      AsyncFileLogger->Log(logData);
-      Logger->Log(logData);
+      if (AsyncFileLogger)
+        AsyncFileLogger->Log(logData);
+      if (Logger)
+        Logger->Log(logData);
       keyboard_->OnKeyPressed(static_cast<unsigned char>(wParam));
     }
   } break;
   case WM_KEYUP:
   case WM_SYSKEYUP: {
     const auto logData = std::string("KeyUp:") + static_cast<char>(wParam);
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     keyboard_->OnKeyReleased(static_cast<unsigned char>(wParam));
   } break;
   case WM_CHAR: {
     const auto logData =
         std::string("On char pressed:") + static_cast<char>(wParam);
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     keyboard_->OnChar(static_cast<char>(wParam));
   } break;
   case WM_MOUSEMOVE: {
@@ -180,16 +195,20 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
         const auto logData = std::string("Mouse move outside window:") +
                              " x:" + std::to_string(pt.x) +
                              " y:" + std::to_string(pt.y);
-        AsyncFileLogger->Log(logData);
-        Logger->Log(logData);
+        if (AsyncFileLogger)
+          AsyncFileLogger->Log(logData);
+        if (Logger)
+          Logger->Log(logData);
       }
       mouse_->OnMouseMove(pt.x, pt.y);
       if (!mouse_->IsInWindow()) {
         SetCapture(hWnd);
         {
           const auto logData = "Mouse enter in window";
-          AsyncFileLogger->Log(logData);
-          Logger->Log(logData);
+          if (AsyncFileLogger)
+            AsyncFileLogger->Log(logData);
+          if (Logger)
+            Logger->Log(logData);
         }
         mouse_->OnMouseEnter();
       }
@@ -198,14 +217,18 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
         const auto logData = std::string("Mouse move:") +
                              " x:" + std::to_string(pt.x) +
                              " y:" + std::to_string(pt.y);
-        AsyncFileLogger->Log(logData);
-        Logger->Log(logData);
+        if (AsyncFileLogger)
+          AsyncFileLogger->Log(logData);
+        if (Logger)
+          Logger->Log(logData);
         mouse_->OnMouseMove(pt.x, pt.y);
       } else {
         ReleaseCapture();
         const auto logData = "Mouse leave from window";
-        AsyncFileLogger->Log(logData);
-        Logger->Log(logData);
+        if (AsyncFileLogger)
+          AsyncFileLogger->Log(logData);
+        if (Logger)
+          Logger->Log(logData);
         mouse_->OnMouseLeave();
       }
     }
@@ -215,8 +238,10 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
     const auto logData = std::string("Mouse left button pressed:") +
                          " x:" + std::to_string(pt.x) +
                          " y:" + std::to_string(pt.y);
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     mouse_->OnLeftPressed(pt.x, pt.y);
   } break;
   case WM_RBUTTONDOWN: {
@@ -224,8 +249,10 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
     const auto logData = std::string("Mouse right button pressed:") +
                          " x:" + std::to_string(pt.x) +
                          " y:" + std::to_string(pt.y);
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     mouse_->OnRightPressed(pt.x, pt.y);
   } break;
   case WM_LBUTTONUP: {
@@ -233,8 +260,10 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
     const auto logData = std::string("Mouse left button released:") +
                          " x:" + std::to_string(pt.x) +
                          " y:" + std::to_string(pt.y);
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     mouse_->OnLeftReleased(pt.x, pt.y);
   } break;
   case WM_RBUTTONUP: {
@@ -242,8 +271,10 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
     const auto logData = std::string("Mouse right button released:") +
                          " x:" + std::to_string(pt.x) +
                          " y:" + std::to_string(pt.y);
-    AsyncFileLogger->Log(logData);
-    Logger->Log(logData);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Log(logData);
+    if (Logger)
+      Logger->Log(logData);
     mouse_->OnRightReleased(pt.x, pt.y);
   } break;
   case WM_MOUSEWHEEL: {
@@ -253,14 +284,18 @@ __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessage(
       const auto logData = std::string("Mouse wheel up:") +
                            " x:" + std::to_string(pt.x) +
                            " y:" + std::to_string(pt.y);
-      AsyncFileLogger->Log(logData);
-      Logger->Log(logData);
+      if (AsyncFileLogger)
+        AsyncFileLogger->Log(logData);
+      if (Logger)
+        Logger->Log(logData);
     } else {
       const auto logData = std::string("Mouse wheel down:") +
                            " x:" + std::to_string(pt.x) +
                            " y:" + std::to_string(pt.y);
-      AsyncFileLogger->Log(logData);
-      Logger->Log(logData);
+      if (AsyncFileLogger)
+        AsyncFileLogger->Log(logData);
+      if (Logger)
+        Logger->Log(logData);
     }
     mouse_->OnWheel(pt.x, pt.y, delta);
   } break;
@@ -290,15 +325,18 @@ MainWindow::RunLoop() const noexcept {
     }
   } catch (const Exception &e) {
     MessageBoxA(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
-    AsyncFileLogger->Error(message.message, message.lParam, message.wParam);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Error(message.message, message.lParam, message.wParam);
     result = -1;
   } catch (const std::exception &e) {
-    AsyncFileLogger->Error(message.message, message.lParam, message.wParam);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Error(message.message, message.lParam, message.wParam);
     MessageBoxA(nullptr, e.what(), "[Standart Exception]",
                 MB_OK | MB_ICONEXCLAMATION);
     result = -1;
   } catch (...) {
-    AsyncFileLogger->Error(message.message, message.lParam, message.wParam);
+    if (AsyncFileLogger)
+      AsyncFileLogger->Error(message.message, message.lParam, message.wParam);
     MessageBoxA(nullptr, "No details available", "Unknown Exception",
                 MB_OK | MB_ICONEXCLAMATION);
     result = -1;

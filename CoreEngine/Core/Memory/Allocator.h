@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <Core/Memory/AllocatorTraits.h>
+#include <Support/Utils/TypeTraits.h>
 #include <Support/Utils/Utils.h>
 
 namespace MythicEngine::core::memory {
@@ -56,7 +57,7 @@ template <class... Args>
 __CONSTEXPR__ void MYTHIC_ENGINE_WIN_API
 Allocator<T>::Construct(void *ptr, Args &&...args) {
   static_assert(std::is_constructible_v<T, Args...>);
-  traits_.Construct(ptr, std::forward<Args>(args)...);
+  traits_.Construct(ptr, support::utils::Forward<Args>(args)...);
 }
 
 } // namespace MythicEngine::core::memory

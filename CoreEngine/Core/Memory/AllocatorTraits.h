@@ -30,13 +30,13 @@ __CONSTEXPR__ __NODISCARD__ void *MYTHIC_ENGINE_WIN_API
 AllocatorTraits<T>::Allocate(size_t bytes) {
   if (bytes == 0)
     return nullptr;
-  return ::operator new(bytes);
+  return malloc(bytes);
 }
 
 template <class T>
 __CONSTEXPR__ void MYTHIC_ENGINE_WIN_API
 AllocatorTraits<T>::Deallocate(void *ptr) {
-  ::operator delete(ptr);
+  free(ptr);
 }
 
 template <class T>
@@ -58,7 +58,7 @@ template <class... Args>
 __CONSTEXPR__ void MYTHIC_ENGINE_WIN_API
 AllocatorTraits<T>::Construct(void *ptr, Args &&...args) {
   PointerType object = static_cast<PointerType>(ptr);
-  new (object) T(support::utils::Forward<Args>(args)...);
+  ::new (object) T(support::utils::Forward<Args>(args)...);
 }
 
 } // namespace MythicEngine::core::memory

@@ -21,6 +21,12 @@
     <ClInclude Include="pch.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Render\DirectX11\Render.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Interfaces\IRender.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -29,5 +35,34 @@
     <ClCompile Include="pch.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Render\DirectX11\Render.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ThirdPaty\DirectX11\Lib\d2d1.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3d10.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3d10_1.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3d11.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3d9.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dcompiler.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\D3DCSX.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\D3DCSXd.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dx10.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dx10d.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dx11.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dx11d.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dx9.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dx9d.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\d3dxof.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\dinput8.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\dsound.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\dwrite.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\DxErr.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\dxgi.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\dxguid.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\X3DAudio.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\xapobase.lib" />
+    <Library Include="ThirdPaty\DirectX11\Lib\xapobased.lib" />
   </ItemGroup>
 </Project>

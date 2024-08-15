@@ -86,6 +86,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,6 +105,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +125,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,6 +143,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,17 +162,23 @@
     <ClInclude Include="Core\Functions\FunctionRunnable.h" />
     <ClInclude Include="Core\Memory\Allocator.h" />
     <ClInclude Include="Core\Memory\AllocatorTraits.h" />
+    <ClInclude Include="Core\Memory\GarbageCollector.h" />
+    <ClInclude Include="Core\Memory\UniquePtr.h" />
     <ClInclude Include="Core\Threads\IRunnable.h" />
     <ClInclude Include="Core\Threads\Queue.h" />
     <ClInclude Include="Core\Threads\Thread.h" />
     <ClInclude Include="Core\Threads\ThreadPool.h" />
+    <ClInclude Include="Core\Time\ITimeDispatcher.h" />
+    <ClInclude Include="Core\Time\Timer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Containers\ContainerExceptions.cpp" />
+    <ClCompile Include="Core\Memory\GarbageCollector.cpp" />
     <ClCompile Include="Core\Threads\Thread.cpp" />
     <ClCompile Include="Core\Threads\ThreadPool.cpp" />
+    <ClCompile Include="Core\Time\Timer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

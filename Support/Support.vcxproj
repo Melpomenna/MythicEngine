@@ -86,6 +86,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,6 +105,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,13 +161,11 @@
     <ClInclude Include="Support\Logger\ILogger.h" />
     <ClInclude Include="Support\Logger\MessageLogger.h" />
     <ClInclude Include="Support\Utils\Exceptions.h" />
-    <ClInclude Include="Support\Utils\ITimerDispatcher.h" />
     <ClInclude Include="Support\Utils\IUpdateHandler.h" />
     <ClInclude Include="Support\Utils\LPWStringWrapper.h" />
     <ClInclude Include="Support\Utils\NonCopy.h" />
     <ClInclude Include="Support\Utils\NonMove.h" />
     <ClInclude Include="Support\Utils\Subscription.h" />
-    <ClInclude Include="Support\Utils\Timer.h" />
     <ClInclude Include="Support\Utils\TypeTraits.h" />
     <ClInclude Include="Support\Utils\Utils.h" />
   </ItemGroup>
@@ -179,7 +181,6 @@
     <ClCompile Include="Support\Logger\MessageLogger.cpp" />
     <ClCompile Include="Support\Utils\Exceptions.cpp" />
     <ClCompile Include="Support\Utils\LPWStringWrapper.cpp" />
-    <ClCompile Include="Support\Utils\Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

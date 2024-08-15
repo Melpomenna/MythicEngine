@@ -2,11 +2,11 @@
 
 #include <Windows.h>
 
-#include <Render/Interfaces/IRender.h>
+#include <Core/Memory/OwnPtr.h>
+#include <Core/Time/Timer.h>
 #include <Support/Utils/Exceptions.h>
 #include <Support/Utils/LPWStringWrapper.h>
 #include <Support/Utils/NonCopy.h>
-#include <Support/Utils/Timer.h>
 
 #include <memory>
 #include <optional>
@@ -27,10 +27,9 @@ class MainWindow final : public support::utils::NonCopy {
   class MainWindowImpl;
   friend class MainWindowImpl;
 
-  using KeyboardPtr = std::unique_ptr<system::keyboard::IKeyboard>;
-  using MousePtr = std::unique_ptr<system::mouse::IMouse>;
-  using BaseTimerPtr = std::shared_ptr<support::utils::Timer>;
-  using RenderPtr = std::unique_ptr<render::interfaces::IRender>;
+  using KeyboardPtr = core::memory::OwnPtr<system::keyboard::IKeyboard>;
+  using MousePtr = core::memory::OwnPtr<system::mouse::IMouse>;
+  using BaseTimerPtr = core::memory::OwnPtr<core::time::Timer>;
 
 public:
   class Exception final : public support::utils::Exception {
@@ -68,7 +67,6 @@ private:
   unsigned height_;
   support::utils::LPWStringWrapper name_;
   BaseTimerPtr timer_;
-  RenderPtr render_;
   KeyboardPtr keyboard_;
   MousePtr mouse_;
   HWND hWnd_;
