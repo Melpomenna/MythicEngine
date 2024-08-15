@@ -101,7 +101,6 @@ public:
 
   MoveVector();
 
-  explicit MoveVector(SizeType);
   explicit MoveVector(SizeType,
                       AllocatorType allocator = memory::Allocator<T>{});
 
@@ -155,16 +154,6 @@ private:
 template <class T, class Allocator>
 MoveVector<T, Allocator>::MoveVector()
     : size_(0), capacity_(0), allocator_(), data_(nullptr) {}
-
-template <class T, class Allocator>
-MoveVector<T, Allocator>::MoveVector(SizeType size)
-    : size_(size), capacity_(size * capacityMultiplier_), allocator_(),
-      data_(nullptr) {
-  data_ = allocator_.Allocate(capacity_ * sizeOfType);
-  for (SizeType i = 0; i < size_; ++i) {
-    allocator_.Construct(&(data_ + i));
-  }
-}
 
 template <class T, class Allocator>
 MoveVector<T, Allocator>::MoveVector(SizeType size, AllocatorType allocator)

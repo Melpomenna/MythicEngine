@@ -11,8 +11,7 @@ StaticThreadPool::StaticThreadPool()
     : StaticThreadPool(std::thread::hardware_concurrency()) {}
 
 StaticThreadPool::StaticThreadPool(size_t workersCount, RunningTag tag)
-    : workersCount_(workersCount), isRunning_(false) {
-  workers_ = containers::MoveVector<Thread>(workersCount,{});
+    : workers_(workersCount),workersCount_(workersCount), isRunning_(false) {
   if (tag == RunningTag::RunAtInit) {
     CreateWorkers();
   }
