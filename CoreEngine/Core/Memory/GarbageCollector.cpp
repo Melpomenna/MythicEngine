@@ -4,9 +4,7 @@
 namespace MythicEngine::core::memory {
 
 GarbageCollector::~GarbageCollector() {
-  for (auto &it : pointers_) {
-    GarbageCollector::UnMark(it);
-  }
+  pointers_.clear();
 }
 
 void MYTHIC_ENGINE_WIN_API GarbageCollector::Release() {
@@ -36,6 +34,11 @@ void MYTHIC_ENGINE_WIN_API GarbageCollector::UnMark(void *ptr) noexcept {
   pointers_.erase(ptr);
 }
 
-void MYTHIC_ENGINE_WIN_API GarbageCollector::Schedule() noexcept {}
+void MYTHIC_ENGINE_WIN_API GarbageCollector::Schedule(float dt) noexcept {
+  currentTime_ += dt;
+  if (std::abs(DefaultTimeForSchedule-currentTime_) >= 0.0001) {
+    currentTime_ = 0;
+  }
+}
 
 } // namespace MythicEngine::core::memory

@@ -42,6 +42,7 @@ Timer::RemoveHandler(const IUpdateHandlerPtr &handler) {
 void MYTHIC_ENGINE_WIN_API Timer::Post() {
   const auto duration = Peek();
   Post([duration](auto &h) { h->OnUpdate(duration); });
+  Mark();
 }
 
 void MYTHIC_ENGINE_WIN_API Timer::Post(const HandleFuncType &event) {

@@ -22,7 +22,7 @@ public:
   MYTHIC_ENGINE_EXPORT virtual bool Contains(void *) noexcept;
   MYTHIC_ENGINE_EXPORT virtual void Mark(void *) noexcept;
   MYTHIC_ENGINE_EXPORT virtual void UnMark(void *) noexcept;
-  MYTHIC_ENGINE_EXPORT virtual void Schedule() noexcept;
+  MYTHIC_ENGINE_EXPORT virtual void Schedule(float) noexcept;
 
 private:
   MYTHIC_ENGINE_EXPORT GarbageCollector() = default;
@@ -31,6 +31,8 @@ private:
   std::shared_mutex mt_;
   std::condition_variable_any notEmpty_;
   std::set<void *> pointers_;
+  float currentTime_ = 0;
+  static __CONSTEXPR__ float DefaultTimeForSchedule = 1.5f;
   static __INLINE__ GarbageCollector *gc_ = nullptr;
 };
 

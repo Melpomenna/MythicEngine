@@ -18,11 +18,11 @@ public:
 
   MYTHIC_ENGINE_EXPORT FunctionRunnable(const FunctionRunnable &) = default;
   MYTHIC_ENGINE_EXPORT FunctionRunnable &
-  operator=(const FunctionRunnable &) = default;
+   operator=(const FunctionRunnable &) = default;
 
   MYTHIC_ENGINE_EXPORT FunctionRunnable(FunctionRunnable &&) noexcept = default;
   MYTHIC_ENGINE_EXPORT FunctionRunnable &
-  operator=(FunctionRunnable &&) noexcept = default;
+   operator=(FunctionRunnable &&) noexcept = default;
 
   MYTHIC_ENGINE_EXPORT explicit FunctionRunnable(FunctionType &&, Args &&...);
 
@@ -76,7 +76,7 @@ FunctionRunnable<Func, void>::FunctionRunnable(FunctionType &&func)
 
 template <class Func>
 void MYTHIC_ENGINE_WIN_API FunctionRunnable<Func, void>::Run() {
-  function_();
+  if (function_) function_();
 }
 
 template <class T> using Function = FunctionRunnable<std::function<T>, void>;

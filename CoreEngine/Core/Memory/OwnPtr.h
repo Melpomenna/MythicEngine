@@ -10,42 +10,47 @@ namespace MythicEngine::core::memory {
 
 enum class MemoryOrderType { Owner, Parent, NoPointer };
 
-template <class T> class MYTHIC_ENGINE_EXPORT OwnPtr final {
+template <class T> class OwnPtr final {
 public:
   using PointerType = T *;
 
-  OwnPtr();
-  explicit OwnPtr(PointerType, MemoryOrderType type = MemoryOrderType::Owner);
+  MYTHIC_ENGINE_EXPORT OwnPtr();
+  MYTHIC_ENGINE_EXPORT explicit
+  OwnPtr(PointerType, MemoryOrderType type = MemoryOrderType::Owner);
 
-  template <class Inhereted> explicit OwnPtr(Inhereted *);
+  template <class Inhereted> MYTHIC_ENGINE_EXPORT explicit OwnPtr(Inhereted *);
 
-  ~OwnPtr();
+  MYTHIC_ENGINE_EXPORT  ~OwnPtr();
 
-  OwnPtr(const OwnPtr &);
-  OwnPtr &operator=(const OwnPtr &);
+  MYTHIC_ENGINE_EXPORT OwnPtr(const OwnPtr &);
+  MYTHIC_ENGINE_EXPORT OwnPtr &operator=(const OwnPtr &);
 
-  OwnPtr(OwnPtr &&) noexcept;
-  OwnPtr &operator=(OwnPtr &&) noexcept;
+  MYTHIC_ENGINE_EXPORT OwnPtr(OwnPtr &&) noexcept;
+  MYTHIC_ENGINE_EXPORT OwnPtr &operator=(OwnPtr &&) noexcept;
 
-  bool operator==(const OwnPtr &) const noexcept;
-  bool operator!=(const OwnPtr &) const noexcept;
+  MYTHIC_ENGINE_EXPORT bool operator==(const OwnPtr &) const noexcept;
+  MYTHIC_ENGINE_EXPORT bool operator!=(const OwnPtr &) const noexcept;
 
-  template <class Inhereted> OwnPtr(const OwnPtr<Inhereted> &);
+  template <class Inhereted>
+  MYTHIC_ENGINE_EXPORT OwnPtr(const OwnPtr<Inhereted> &);
 
-  template <class Inhereted> OwnPtr &operator=(const OwnPtr<Inhereted> &);
+  template <class Inhereted>
+  MYTHIC_ENGINE_EXPORT OwnPtr &operator=(const OwnPtr<Inhereted> &);
 
-  template <class Inhereted> OwnPtr(OwnPtr<Inhereted> &&) noexcept;
+  template <class Inhereted>
+  MYTHIC_ENGINE_EXPORT OwnPtr(OwnPtr<Inhereted> &&) noexcept;
 
-  template <class Inhereted> OwnPtr &operator=(OwnPtr<Inhereted> &&) noexcept;
+  template <class Inhereted>
+  MYTHIC_ENGINE_EXPORT OwnPtr &operator=(OwnPtr<Inhereted> &&) noexcept;
 
-  PointerType operator->() const;
+  MYTHIC_ENGINE_EXPORT PointerType operator->() const;
 
-  operator bool() const noexcept;
+  MYTHIC_ENGINE_EXPORT operator bool() const noexcept;
 
-  MemoryOrderType GetType() const noexcept;
+  MYTHIC_ENGINE_EXPORT MemoryOrderType GetType() const noexcept;
 
-  PointerType Release() noexcept;
-  PointerType Get() const noexcept;
+  MYTHIC_ENGINE_EXPORT PointerType Release() noexcept;
+  MYTHIC_ENGINE_EXPORT PointerType Get() const noexcept;
 
 private:
   PointerType pointer_;

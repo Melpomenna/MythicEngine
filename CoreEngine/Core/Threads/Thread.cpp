@@ -7,7 +7,7 @@
 
 namespace MythicEngine::core::threads {
 
-Thread::Thread() : id_(reinterpret_cast<uint64_t>(this)) {
+Thread::Thread() : task_(nullptr), id_(reinterpret_cast<uint64_t>(this)) {
   state_ = ThreadState::NoWork;
 }
 
@@ -76,13 +76,14 @@ void MYTHIC_ENGINE_WIN_API Thread::RunTask(RunnableType &&task) {
 void MYTHIC_ENGINE_WIN_API Thread::TryJoin() { worker_.join(); }
 
 void Thread::SafeJoin() {
-  if (!isTaskProcessed_ || state_ == ThreadState::Detach ||
+  if (state_ == ThreadState::Detach ||
       state_ == ThreadState::NoWork)
     return;
 
   std::unique_lock lock{mt_};
+
   while (IsRunning()) {
-    isRunning_.wait(mt_);
+    isRunning_.wait(lock);
   }
 
   if (worker_.joinable()) {
@@ -91,7 +92,7 @@ void Thread::SafeJoin() {
 }
 
 void MYTHIC_ENGINE_WIN_API Thread::Join() {
-  if (!isTaskProcessed_ || state_ == ThreadState::Detach)
+  if (state_ == ThreadState::Detach || state_ == ThreadState::NoWork)
     return;
 
   if (HasException()) {

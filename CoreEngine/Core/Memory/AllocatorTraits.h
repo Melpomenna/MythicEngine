@@ -43,7 +43,7 @@ template <class T>
 __CONSTEXPR__ void MYTHIC_ENGINE_WIN_API
 AllocatorTraits<T>::Construct(void *ptr) {
   PointerType object = static_cast<PointerType>(ptr);
-  object->T();
+  ::new (object) T();
 }
 
 template <class T>

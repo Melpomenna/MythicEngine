@@ -8,7 +8,6 @@
 #include <Support/Utils/LPWStringWrapper.h>
 #include <Support/Utils/NonCopy.h>
 
-#include <memory>
 #include <optional>
 
 namespace MythicEngine::engine {

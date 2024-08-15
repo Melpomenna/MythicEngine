@@ -1,6 +1,8 @@
 ﻿#include "Window.h"
 
+#include <Core/Functions/FunctionRunnable.h>
 #include <Core/Memory/UniquePtr.h>
+#include <Core/Threads/ThreadPool.h>
 #include <Engine/System/Keyboard/Keyboard.h>
 #include <Engine/System/Mouse/Mouse.h>
 #include <Render/DirectX11/Render.h>
@@ -14,6 +16,8 @@
 namespace {
 
 namespace memory = MythicEngine::core::memory;
+namespace threads = MythicEngine::core::threads;
+namespace functions = MythicEngine::core::functions;
 namespace logger = MythicEngine::support::logger;
 
 using DebugLoggerPtr = memory::UniquePtr<logger::ILogger>;
@@ -22,6 +26,9 @@ const DebugLoggerPtr Logger =
 const DebugLoggerPtr AsyncFileLogger =
     memory::MakeUnique<logger::ILogger, logger::AsyncFileLogger>(
         "./Logs/log.txt");
+
+threads::StaticThreadPool Pool = threads::StaticThreadPool();
+
 } // namespace
 
 namespace MythicEngine::engine {
@@ -88,6 +95,7 @@ MainWindow::MainWindow(unsigned width, unsigned height, const char *name)
   wr.right = static_cast<LONG>(width) + wr.left;
   wr.top = 100;
   wr.bottom = static_cast<LONG>(height) + wr.top;
+
   if (AdjustWindowRect(
           &wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_EX_ACCEPTFILES,
           FALSE) == 0) {
@@ -110,7 +118,10 @@ MainWindow::MainWindow(unsigned width, unsigned height, const char *name)
   ShowWindow(hWnd_, SW_SHOWDEFAULT);
 }
 
-MainWindow::~MainWindow() { DestroyWindow(hWnd_); }
+MainWindow::~MainWindow() {
+  Pool.SafeJoin();
+  DestroyWindow(hWnd_);
+}
 
 __NODISCARD__ LRESULT MYTHIC_ENGINE_WIN_API MainWindow::HandleMessageSetup(
     HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept {

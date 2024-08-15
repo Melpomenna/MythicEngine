@@ -13,6 +13,7 @@ class MYTHIC_ENGINE_EXPORT MoveVector : public support::utils::NonCopy {
 public:
   class MYTHIC_ENGINE_EXPORT Iterator final {
   public:
+    friend class MoveVector;
     Iterator();
     explicit Iterator(T *);
     ~Iterator();
@@ -43,7 +44,8 @@ public:
     const T &&operator*() const;
 
     T *operator->() const noexcept;
-
+  private:
+    explicit Iterator(T*, size_t);
   private:
     T *ptr_;
     size_t shift_;
@@ -168,9 +170,9 @@ template <class T, class Allocator>
 MoveVector<T, Allocator>::MoveVector(SizeType size, AllocatorType allocator)
     : size_(size), capacity_(size * capacityMultiplier_), allocator_(allocator),
       data_(nullptr) {
-  data_ = allocator_.Allocate(capacity_ * sizeOfType);
+  data_ = static_cast<PointerType>(allocator_.Allocate(capacity_ * sizeOfType));
   for (SizeType i = 0; i < size_; ++i) {
-    allocator_.Construct(&(data_ + i));
+    allocator_.Construct(data_ + i);
   }
 }
 
@@ -178,7 +180,7 @@ template <class T, class Allocator> MoveVector<T, Allocator>::~MoveVector() {
   for (SizeType i = 0; i < size_; ++i) {
     allocator_.Destroy(data_ + i);
   }
-  allocator_.Deallocate(data_ + 1);
+  allocator_.Deallocate(data_);
 }
 
 template <class T, class Allocator>
@@ -196,13 +198,13 @@ MoveVector<T, Allocator>::MoveVector(MoveVector &&other) noexcept {
 template <class T, class Allocator>
 MoveVector<T, Allocator> &
 MoveVector<T, Allocator>::operator=(MoveVector &&other) noexcept {
-  if (this == &other || other.data_ == nullptr || data_ == nullptr)
+  if (this == &other)
     return *this;
 
   for (SizeType i = 0; i < size_; ++i) {
-    allocator_.Destroy(&(data_ + i));
+    allocator_.Destroy(data_ + i);
   }
-  allocator_.Destroy(data_);
+  allocator_.Deallocate(data_);
 
   size_ = other.size_;
   capacity_ = other.capacity_;
@@ -229,8 +231,8 @@ void MYTHIC_ENGINE_WIN_API MoveVector<T, Allocator>::EmplaceBack(
   if (size_ == capacity_ && !TryResize()) {
     return;
   }
-  RValueType rvalue = support::utils::Move(value);
-  data_[size_] = support::utils::Move(rvalue);
+  data_[size_] = support::utils::Move(value);
+  ++size_;
 }
 
 template <class T, class Allocator>
@@ -340,7 +342,7 @@ MoveVector<T, Allocator>::Begin() noexcept {
 template <class T, class Allocator>
 typename MoveVector<T, Allocator>::Iterator MYTHIC_ENGINE_WIN_API
 MoveVector<T, Allocator>::End() noexcept {
-  return IteratorType(data_ + size_ + 1);
+  return IteratorType(data_ + size_, size_);
 }
 
 template <class T, class Allocator>
@@ -358,10 +360,18 @@ MoveVector<T, Allocator>::REnd() noexcept {
 template <class T, class Allocator>
 bool MYTHIC_ENGINE_WIN_API MoveVector<T, Allocator>::TryResize() noexcept {
   try {
+    if (capacity_ == 0) {
+      capacity_ = 1;
+      PointerType ptr = static_cast<PointerType>(
+        allocator_.Allocate(capacity_ * sizeOfType));
+      allocator_.Construct(ptr);
+      data_ = ptr;
+      return true;
+    }
     PointerType ptr = static_cast<PointerType>(
         allocator_.Allocate(capacity_ * capacityMultiplier_ * sizeOfType));
     for (SizeType i = 0; i < size_; ++i) {
-      allocator_.Construct(ptr + i, support::utils::Move(*(data_ + i)));
+      allocator_.Construct(ptr + i, support::utils::Move(data_[i]));
       allocator_.Destroy(data_ + i);
     }
 
@@ -411,6 +421,11 @@ template <class T, class Allocator>
 MoveVector<T, Allocator>::Iterator::~Iterator() {
   ptr_ = nullptr;
   shift_ = 0;
+}
+
+template<class T, class Allocator>
+MoveVector<T,Allocator>::Iterator::Iterator(T* ptr, size_t shift) : ptr_(ptr), shift_(shift)  {
+
 }
 
 template <class T, class Allocator>
@@ -515,7 +530,7 @@ size_t MYTHIC_ENGINE_WIN_API MoveVector<T, Allocator>::Iterator::operator-(
 template <class T, class Allocator>
 bool MYTHIC_ENGINE_WIN_API MoveVector<T, Allocator>::Iterator::operator==(
     const Iterator &other) const noexcept {
-  return shift_ == other.shift_ && ptr_ == other.ptr_;
+  return shift_ == other.shift_;
 }
 
 template <class T, class Allocator>

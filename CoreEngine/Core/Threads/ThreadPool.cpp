@@ -12,6 +12,7 @@ StaticThreadPool::StaticThreadPool()
 
 StaticThreadPool::StaticThreadPool(size_t workersCount, RunningTag tag)
     : workersCount_(workersCount), isRunning_(false) {
+  workers_ = containers::MoveVector<Thread>(workersCount,{});
   if (tag == RunningTag::RunAtInit) {
     CreateWorkers();
   }
@@ -84,24 +85,12 @@ void MYTHIC_ENGINE_WIN_API StaticThreadPool::CreateWorkers() {
 
   isRunning_.store(true);
 
-  if (workers_.Size() == workersCount_) {
-    for (auto i = 0UL; i < workersCount_; ++i) {
-      std::function handler{[this]() noexcept { MainThreadWork(); }};
-      using FunctionType = functions::Function<void()>;
-      memory::OwnPtr function = memory::MakeOwn<IRunnable, FunctionType>(
-          support::utils::Move(handler));
-      workers_[i].RunTask(support::utils::Move(function));
-    }
-    return;
-  }
-
   for (auto i = 0UL; i < workersCount_; ++i) {
     std::function handler{[this]() noexcept { MainThreadWork(); }};
     using FunctionType = functions::Function<void()>;
-    memory::OwnPtr function =
-        memory::MakeOwn<IRunnable, FunctionType>(support::utils::Move(handler));
-    Thread worker{support::utils::Move(function)};
-    workers_.PushBack(Move(worker));
+    memory::OwnPtr function = memory::MakeOwn<IRunnable, FunctionType>(
+        support::utils::Move(handler));
+    workers_[i].RunTask(support::utils::Move(function));
   }
 }
 
