@@ -1,0 +1,99 @@
+﻿{
+  "version": 9,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install/${presetName}",
+      "generator": "Visual Studio 17 2022",
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_STANDARD_REQUIRED": true,
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "MI_BUILD_TESTS": "OFF",
+        "MI_SECURE": "ON",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build/${presetName}/WorkFolder",
+        "BENCHMARK_ENABLE_GTEST_TESTS": "OFF",
+        "BENCHMARK_ENABLE_TESTING": "OFF",
+        "BENCHMARK_INSTALL_DOCS": "OFF",
+        "gtest_force_shared_crt": "ON"
+      },
+      "condition": {
+        "lhs": "Windows",
+        "rhs": "${hostSystemName}",
+        "type": "equals"
+      }
+    },
+    {
+      "name": "x64-debug",
+      "displayName": "x64 Debug",
+      "inherits": "base",
+      "architecture": {
+        "value": "x64"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "MI_TRACK_ASAN": "ON",
+        "MI_DEBUG_FULL": "ON",
+        "QUILL_SANITIZE_ADDRESS": "ON"
+      }
+    },
+    {
+      "name": "x64-release",
+      "displayName": "x64 Release",
+      "inherits": "base",
+      "architecture": {
+        "value": "x64"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "MYTHIC_ENGINE_USE_PROFILE": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "x64-debug",
+      "configurePreset": "x64-debug",
+      "configuration": "Debug",
+      "jobs": 8
+    },
+    {
+      "name": "x64-release",
+      "configurePreset": "x64-release",
+      "configuration": "Release",
+      "jobs": 8
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "x64-release",
+      "configurePreset": "x64-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "x64-debug",
+      "configurePreset": "x64-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    }
+  ]
+}

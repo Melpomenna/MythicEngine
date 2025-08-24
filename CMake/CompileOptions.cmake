@@ -1,0 +1,72 @@
+function(SetCompileOptions)
+    if(${CMAKE_BUILD_TYPE} MATCHES "Release")
+        message(STATUS "Using Release compile options")
+        add_link_options(/LTCG
+                         /CGTHREADS:8
+                         /NOLOGO
+                         /MACHINE:x64
+                         /DEBUG:FULL
+        )
+        add_compile_options(/MD 
+                            /O2
+                            /arch:AVX2
+                            /favor:INTEL64
+                            /bigobj
+                            /cgthreads8
+                            /analyze
+                            /diagnostics:classic
+                            /GL
+                            /MP
+                            /Qpar
+                            /sdl
+                            /std:c++latest
+                            /W4
+                            /Zo
+                            /WX
+                            /Zc:__cplusplus
+                            /external:anglebrackets
+                            /analyze:external-
+                            /external:templates-
+                            /external:W0
+                            /analyze:WX-
+                            /Zi
+        )
+        if (MYTHIC_ENGINE_USE_PROFILE)
+            message(STATUS "Using profile for PGO")
+            add_link_options(/USEPROFILE)
+        else()
+            add_link_options(/FASTGENPROFILE)
+            message(STATUS "Ganerate profile for PGO")
+        endif()
+    else()
+        message(STATUS "Using Debug compile options")
+        add_link_options(/CGTHREADS:2
+                         /DEBUG
+                         /NOLOGO
+                         /MACHINE:x64
+        )
+        add_compile_options(/MDd 
+                            /arch:AVX2
+                            /favor:INTEL64
+                            /bigobj
+                            /cgthreads2
+                            /analyze
+                            /diagnostics:classic
+                            /fsanitize=address
+                            /MP
+                            /RTCs
+                            /sdl
+                            /std:c++latest
+                            /Zi
+                            /W4
+                            /Zf
+                            /WX
+                            /Zc:__cplusplus
+                            /external:anglebrackets
+                            /analyze:external-
+                            /external:templates-
+                            /external:W0
+                            /analyze:WX-
+        )
+    endif()
+endfunction()
