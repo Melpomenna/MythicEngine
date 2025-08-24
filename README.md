@@ -30,10 +30,14 @@ MythicEngine is an open-source, lightweight game engine currently under active d
 1. **Clone the repository:**
 2. **Configure the project with CMake:**
 3. **Build the project:**
-   - Open the generated solution in Visual Studio (`build/MythicEngine.sln`)
-   - Build the desired configuration (Debug/Release)
+   - Open the generated solution in Visual Studio (`build/x64-release/MythicEngine.sln` or `build/x64-debug/MythicEngine.sln`)
+   - Build the desired configuration (x64-debug/x64-release)
 
    Or build from the command line:
+```
+    cmake --preset=x64-release
+    cmake --build . --preset=x64-release
+```
 
 ### Running Tests
 
