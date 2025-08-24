@@ -22,6 +22,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+        $env:PATH = "$(Build.SourcesDirectory)\build\x64-release\WorkFolder;$env:PATH"
         ctest --preset=x64-release
     failOnStderr: true
     workingDirectory: $(Build.SourcesDirectory)
