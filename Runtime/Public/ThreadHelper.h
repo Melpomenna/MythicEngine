@@ -111,6 +111,7 @@ namespace Runtime::Parallel
         template <class T>
         RUNTIME_NODISCARD T* GetValue() noexcept
         {
+            std::shared_lock lock{valueProvaider_.mt, std::try_to_lock_t{}};
             if (valueProvaider_.provaider.has_value())
                 return static_cast<T*>(valueProvaider_.provaider.value().get());
             return nullptr;
@@ -178,6 +179,7 @@ namespace Runtime::Parallel
                 std::terminate();
             }
             MessageOnThreadCreate(options_.threadId);
+            tupledFuncPointer.release();
         }
 
 
