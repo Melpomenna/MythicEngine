@@ -24,14 +24,14 @@ steps:
     script: |
         ctest --preset=x64-release
     failOnStderr: true
-    workingDirectory:
+    workingDirectory: $(Build.SourcesDirectory)
 - task: PowerShell@2
   displayName: "Benchmarks"
   inputs:
     targetType: 'inline'
     script: |
         .\build\x64-release\WorkFolder\Benchmarks.exe
-    workingDirectory:
+    workingDirectory: $(Build.SourcesDirectory)
 - task: ArchiveFiles@2
   displayName: "Create archive"
   inputs:
