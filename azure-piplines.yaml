@@ -22,7 +22,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        .\build\release\WorkFolder\MythicRuntimeTests.exe
+        .\build\x64-release\WorkFolder\MythicRuntimeTests.exe
     failOnStderr: true
     workingDirectory:
 - task: PowerShell@2
@@ -30,7 +30,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        .\build\release\WorkFolder\Benchmarks.exe
+        .\build\x64-release\WorkFolder\Benchmarks.exe
     workingDirectory:
 - task: ArchiveFiles@2
   displayName: "Create archive"
