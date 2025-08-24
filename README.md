@@ -6,7 +6,7 @@
 
 # MythicEngine
 
-[![Build Status](https://dev.azure.com/your-organization/your-project/_apis/build/status/your-pipeline-name?branchName=main)](https://dev.azure.com/your-organization/your-project/_build)
+[![Build Status](https://dev.azure.com/mellpomeNn/MythicEngine/_apis/build/status%2FMelpomenna.MythicEngine?branchName=main)](https://dev.azure.com/mellpomeNn/MythicEngine/_build/latest?definitionId=3&branchName=main)
 
 MythicEngine is an open-source, lightweight game engine currently under active development. The project aims to provide a modern, modular foundation for game creation using C++.
 
