@@ -22,7 +22,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        .\build\x64-release\WorkFolder\MythicRuntimeTests.exe
+        ctest --preset=x64-release
     failOnStderr: true
     workingDirectory:
 - task: PowerShell@2
