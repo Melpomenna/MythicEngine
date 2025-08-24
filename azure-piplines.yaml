@@ -22,7 +22,6 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        Set-Location "$(Build.SourcesDirectory)"
         ctest --preset=x64-release
     failOnStderr: true
     workingDirectory:
