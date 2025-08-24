@@ -14,7 +14,7 @@ TEST(ThreadTest, StartAndJoinOneThreadSuccess)
             {
                 sum += i;
             }
-            std::this_thread::sleep_for(std::chrono::seconds(2));
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
             return sum;
         },
         Runtime::Parallel::ThreadOptionsHelper{}, 500);
@@ -35,7 +35,7 @@ TEST(ThreadTest, StartAndJoinWithException)
     int mainThreadId = Runtime::System::GetCurrentThreadId();
     Runtime::Parallel::Thread worker{[]()
                                      {
-                                         std::this_thread::sleep_for(std::chrono::seconds(2));
+                                         std::this_thread::sleep_for(std::chrono::microseconds(250));
                                          throw std::runtime_error{"Something"};
                                      },
                                      Runtime::Parallel::ThreadOptionsHelper{}};
