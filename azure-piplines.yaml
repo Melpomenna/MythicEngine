@@ -22,7 +22,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        ctest --preset=x64-release
+        ctest --preset=x64-release --verbose
     failOnStderr: true
     workingDirectory:
 - task: PowerShell@2

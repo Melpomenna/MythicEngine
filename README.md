@@ -1,10 +1,11 @@
+# MythicEngine
+
 <p align="center">
   <a href="https://dev.azure.com/your-organization/your-project/_build">
     <img src="Misc/MythinEngineMain.png" alt="MythicEngine Main" />
   </a>
 </p>
 
-# MythicEngine
 
 [![Build Status](https://dev.azure.com/mellpomeNn/MythicEngine/_apis/build/status%2FMelpomenna.MythicEngine?branchName=main)](https://dev.azure.com/mellpomeNn/MythicEngine/_build/latest?definitionId=3&branchName=main)
 
