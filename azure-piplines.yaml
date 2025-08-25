@@ -18,12 +18,16 @@ steps:
   inputs: 
     workingDirectory: 
     cmakeArgs: "--build . --preset=x64-release"
-- task: PowerShell@2
-  displayName: "Tests"
+- script: |
+    mkdir -p $(Build.SourcesDirectory)/artifacts
+    cd $(Build.SourcesDirectory)
+    ctest --preset=x64-release --output-log $(Build.SourcesDirectory)/artifacts/mythic_tests_output.xml
+  displayName: 'Tests'
+- task: PublishTestResults@2
   inputs:
-    filePath: 'C:\Melpomenna\Apps\ctest.ps1'
-    failOnStderr: true
-    workingDirectory: $(Build.SourcesDirectory)
+    testResultsFormat: 'CTest'
+    testResultsFiles: '$(Build.SourcesDirectory)/artifacts/mythic_tests_output.xml'
+  condition: succeededOrFailed()
 - task: PowerShell@2
   displayName: "Benchmarks"
   inputs:
@@ -40,7 +44,7 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
-  displayName: "Publich artifacts"
+  displayName: "Publish artifacts"
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'release'
