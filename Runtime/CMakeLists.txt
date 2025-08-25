@@ -1,4 +1,4 @@
-set(target Runtime)
+set(target MythicRuntime)
 
 set(RUNTIME_PUBLIC_INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Public)
 set(RUNTIME_PRIVATE_INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Private)
@@ -24,6 +24,9 @@ add_library(${target} SHARED
 
 target_link_libraries(${target} PRIVATE 
 						quill
+)
+
+target_link_libraries(${target} PUBLIC
 						mimalloc
 )
 

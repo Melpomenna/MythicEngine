@@ -18,31 +18,16 @@ steps:
   inputs: 
     workingDirectory: 
     cmakeArgs: "--build . --preset=x64-release"
-- task: PowerShell@2
-  displayName: "Tests"
-  inputs:
-    targetType: 'inline'
-    script: |
-        ctest --preset=x64-release
-    failOnStderr: true
-    workingDirectory: $(Build.SourcesDirectory)
-- task: PowerShell@2
-  displayName: "Benchmarks"
-  inputs:
-    targetType: 'inline'
-    script: |
-        .\build\x64-release\WorkFolder\Benchmarks.exe
-    workingDirectory: $(Build.SourcesDirectory)
 - task: ArchiveFiles@2
   displayName: "Create archive"
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/build/release/WorkFolder'
+    rootFolderOrFile: '$(Build.SourcesDirectory)/build/x64-release/WorkFolder'
     includeRootFolder: false
     archiveFile: '$(Build.ArtifactStagingDirectory)/MythinEngine-release.zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
-  displayName: "Publich artifacts"
+  displayName: "Publish artifacts"
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'release'

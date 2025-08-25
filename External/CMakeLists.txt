@@ -1,4 +1,11 @@
 add_subdirectory(mimalloc)
-add_subdirectory(googletest)
-add_subdirectory(benchmark)
+
+if (MYTHIC_ENGINE_BUILD_TESTS)
+	add_subdirectory(googletest)
+endif()
+
+if (MYTHIC_ENGINE_BUILD_BENCHMARKS)
+	add_subdirectory(benchmark)
+endif()
+
 add_subdirectory(quill)

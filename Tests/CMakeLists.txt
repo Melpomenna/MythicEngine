@@ -5,7 +5,7 @@ add_executable(${target}
 )
 
 target_link_libraries(${target} PRIVATE
-	Runtime
+	MythicRuntime
 	gtest
 )
 target_include_directories(${target} PRIVATE

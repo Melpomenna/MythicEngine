@@ -1,4 +1,5 @@
 #pragma warning(disable : 4389 4245 4081 4389)
+#include "MallocHelper.h"
 #include <gtest/gtest.h>
 #include "CoreRuntime.h"
 #include "ThreadHelper.h"
