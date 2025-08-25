@@ -40,11 +40,6 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Setup MSVC
-        uses: microsoft/setup-msbuild@v1
-        with:
-          vs-version: '17.8'
-
       - name: Run Tests
         env:
             MIMALLOC_VERBOSE: 1
@@ -53,11 +48,6 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Setup MSVC
-        uses: microsoft/setup-msbuild@v1
-        with:
-          vs-version: '17.8'
-
       - name: Run Benchmarks
         run: .\build\x64-release\WorkFolder\Benchmarks.exe
   archive:
