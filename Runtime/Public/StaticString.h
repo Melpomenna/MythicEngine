@@ -118,4 +118,19 @@ namespace Runtime::StaticString
      */
     static inline constexpr char ExceptionInThreadFunctionMessage[] = "Exception in thread function";
 
+    /**
+     * @brief Message indicating failure to suspend a thread, with a placeholder for thread id.
+     *
+     * This message is used when the system fails to suspend a thread.
+     * The placeholder '{}' should be replaced with the thread pointer.
+     */
+    static inline constexpr char FailedToSuspendThreadMessage[] = "Cannot suspend thread {}";
+
+    /**
+     * @brief Message indicating failure to resume a thread, with a placeholder for thread id.
+     *
+     * This message is used when the system fails to resume a thread.
+     * The placeholder '{}' should be replaced with the thread pointer.
+     */
+    static inline constexpr char FailedToResumeThreadMessage[] = "Cannot resume thread {}";
 } // namespace Runtime::StaticString

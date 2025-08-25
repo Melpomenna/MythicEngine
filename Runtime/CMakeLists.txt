@@ -24,9 +24,6 @@ add_library(${target} SHARED
 
 target_link_libraries(${target} PRIVATE 
 						quill
-)
-
-target_link_libraries(${target} PUBLIC
 						mimalloc
 )
 
