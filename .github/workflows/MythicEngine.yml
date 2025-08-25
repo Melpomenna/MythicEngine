@@ -76,9 +76,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+            minimum-approvals: 1
 
       - name: Archive Release
         uses: actions/upload-artifact@v4
         with:
           name: MythinEngine-release
           path: build/x64-release/WorkFolder
+          minimum-approvals: 1
