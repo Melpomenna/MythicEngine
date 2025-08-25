@@ -17,7 +17,6 @@
         "CMAKE_CXX_STANDARD_REQUIRED": true,
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "MI_BUILD_TESTS": "OFF",
-        "MI_SECURE": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build/${presetName}/WorkFolder",
         "CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",

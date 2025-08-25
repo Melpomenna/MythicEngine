@@ -47,6 +47,8 @@ jobs:
           cmake-version: '3.31.6'
 
       - name: Run Tests
+        env:
+            MIMALLOC_VERBOSE: 1
         run: ctest --preset=x64-release
 
   benchmark:
