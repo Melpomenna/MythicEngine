@@ -21,7 +21,10 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '3.31.6'
-
+      - name: Install vcredist
+        run: |
+          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile "vc_redist.x64.exe"
+          Start-Process -FilePath "vc_redist.x64.exe" -ArgumentList "/quiet" -Wait
       - name: Configure
         run: cmake --preset=x64-release
 
