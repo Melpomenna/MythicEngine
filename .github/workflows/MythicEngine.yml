@@ -48,9 +48,7 @@ jobs:
         env:
             MIMALLOC_VERBOSE: 1
         run: |
-            Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile "vc_redist.x64.exe"
-            Start-Process -FilePath ".\vc_redist.x64.exe" -ArgumentList "/install", "/quiet", "/norestart" -Wait
-            ctest --preset=x64-release
+            ctest --preset=x64-release --verbose
   benchmark:
     runs-on: self-hosted
     needs: build

@@ -23,7 +23,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        ctest --preset=x64-release
+        ctest --preset=x64-release --verbose
     workingDirectory: $(Build.SourcesDirectory)
 - task: PowerShell@2
   displayName: "Benchmarks"
