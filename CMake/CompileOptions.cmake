@@ -7,7 +7,7 @@ function(SetCompileOptions)
                          /MACHINE:x64
                          /DEBUG:FULL
         )
-        add_compile_options(/MD 
+        add_compile_options(/MD
                             /O2
                             /arch:AVX2
                             /favor:INTEL64
