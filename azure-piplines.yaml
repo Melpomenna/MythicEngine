@@ -23,8 +23,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        $env:PATH = "$(Build.SourcesDirectory)\build\x64-release\WorkFolder;" + $env:PATH
-        ctest --preset=x64-release
+        Set-Location "$(Build.SourcesDirectory)/build/x64-release/WorkFolder"
+        ./MythicRuntimeTests.exe
     failOnStderr: true
     workingDirectory: $(Build.SourcesDirectory)
 - task: PowerShell@2
@@ -32,7 +32,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        .\build\x64-release\WorkFolder\Benchmarks.exe
+        Set-Location "$(Build.SourcesDirectory)/build/x64-release/WorkFolder"
+        ./Benchmarks.exe
     workingDirectory: $(Build.SourcesDirectory)
 - task: ArchiveFiles@2
   displayName: "Create archive"
