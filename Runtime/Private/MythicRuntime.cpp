@@ -14,20 +14,20 @@ namespace Runtime
 {
     bool InitRuntime()
     {
-        // clang-format off
-        std::initializer_list<mi_option_t> options = {
-#if defined (_DEBUG)
-                                                      mi_option_show_stats,
-                                                      mi_option_show_errors,
-                                                      mi_option_verbose,
-#endif
-                                                      mi_option_reserve_huge_os_pages
-        };
-        // clang-format on
-        for (const auto& option : options)
-        {
-            mi_option_set_enabled(option, true);
-        }
+//        // clang-format off
+//        std::initializer_list<mi_option_t> options = {
+//#if defined (_DEBUG)
+//                                                      mi_option_show_stats,
+//                                                      mi_option_show_errors,
+//                                                      mi_option_verbose,
+//#endif
+//                                                      mi_option_reserve_huge_os_pages
+//        };
+//        // clang-format on
+//        for (const auto& option : options)
+//        {
+//            mi_option_set_enabled(option, true);
+//        }
         System::EnableLFHHeap();
 
         quill::BackendOptions backendOptions;

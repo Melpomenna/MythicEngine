@@ -26,9 +26,9 @@ target_link_libraries(${target} PRIVATE
 						quill
 )
 
-target_link_libraries(${target} PUBLIC
-						mimalloc-static
-)
+# target_link_libraries(${target} PUBLIC
+#						mimalloc-static
+#)
 
 target_include_directories(${target} PRIVATE 
 						   ${CMAKE_CURRENT_SOURCE_DIR}/Public
