@@ -18,16 +18,14 @@ steps:
   inputs: 
     workingDirectory: 
     cmakeArgs: "--build . --preset=x64-release"
-- script: |
-    mkdir -p $(Build.SourcesDirectory)/artifacts
-    cd $(Build.SourcesDirectory)
-    ctest --preset=x64-release --output-log $(Build.SourcesDirectory)/artifacts/mythic_tests_output.xml
-  displayName: 'Tests'
-- task: PublishTestResults@2
+- task: PowerShell@2
+  displayName: "Tests"
   inputs:
-    testResultsFormat: 'CTest'
-    testResultsFiles: '$(Build.SourcesDirectory)/artifacts/mythic_tests_output.xml'
-  condition: succeededOrFailed()
+    targetType: 'inline'
+    script: |
+        $env:PATH += ";$(Build.SourcesDirectory)\build\x64-release\WorkFolder"
+        ctest --preset=x64-release
+    workingDirectory: $(Build.SourcesDirectory)
 - task: PowerShell@2
   displayName: "Benchmarks"
   inputs:

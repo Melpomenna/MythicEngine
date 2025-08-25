@@ -750,6 +750,7 @@ FodyWeavers.xsd
 # Other
 
 build*
+_CPack_Packages
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
