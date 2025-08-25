@@ -6,7 +6,6 @@ function(SetCompileOptions)
                          /NOLOGO
                          /MACHINE:x64
                          /DEBUG:FULL
-                         /INCLUDE:mi_version
         )
         add_compile_options(/MD 
                             /O2
@@ -45,7 +44,6 @@ function(SetCompileOptions)
                          /DEBUG
                          /NOLOGO
                          /MACHINE:x64
-                         /INCLUDE:mi_version
         )
         add_compile_options(/MDd 
                             /arch:AVX2
