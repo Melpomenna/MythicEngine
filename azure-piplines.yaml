@@ -21,10 +21,7 @@ steps:
 - task: PowerShell@2
   displayName: "Tests"
   inputs:
-    targetType: 'inline'
-    script: |
-        Set-Location "$(Build.SourcesDirectory)/build/x64-release/WorkFolder"
-        ./MythicRuntimeTests.exe
+    filePath: 'C:\Melpomenna\Apps\ctest.ps1'
     failOnStderr: true
     workingDirectory: $(Build.SourcesDirectory)
 - task: PowerShell@2
@@ -32,8 +29,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        Set-Location "$(Build.SourcesDirectory)/build/x64-release/WorkFolder"
-        ./Benchmarks.exe
+        .\build\x64-release\WorkFolder\Benchmarks.exe
     workingDirectory: $(Build.SourcesDirectory)
 - task: ArchiveFiles@2
   displayName: "Create archive"
