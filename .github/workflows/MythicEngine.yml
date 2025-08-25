@@ -22,7 +22,7 @@ jobs:
         with:
           cmake-version: '3.31.6'
       - name: Configure
-        run: cmake --preset=x64-release
+        run: cmake --preset=x64-release  -DCMAKE_BUILD_ON_CI=ON
 
   build:
     runs-on: self-hosted
@@ -40,6 +40,10 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.31.6'
       - name: Run Tests
         env:
             MIMALLOC_VERBOSE: 1
@@ -48,6 +52,10 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.31.6'
       - name: Run Benchmarks
         run: .\build\x64-release\WorkFolder\Benchmarks.exe
   archive:

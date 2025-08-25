@@ -12,7 +12,7 @@ steps:
   displayName: "Configurate"
   inputs:
     workingDirectory: 
-    cmakeArgs: '--preset=x64-release'
+    cmakeArgs: '--preset=x64-release -DCMAKE_BUILD_ON_CI=ON'
 - task: CMake@1
   displayName: "Build"
   inputs: 
