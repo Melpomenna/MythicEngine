@@ -20,6 +20,8 @@
         "MI_SECURE": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build/${presetName}/WorkFolder",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build/${presetName}/WorkFolder",
         "BENCHMARK_ENABLE_GTEST_TESTS": "OFF",
         "BENCHMARK_ENABLE_TESTING": "OFF",
         "BENCHMARK_INSTALL_DOCS": "OFF",
