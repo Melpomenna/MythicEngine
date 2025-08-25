@@ -101,4 +101,15 @@ namespace Runtime::System
      */
     RUNTIME_NODISCARD RUNTIME_API unsigned long GetCurrentThreadId();
 
+    /**
+     * @brief Yields execution of the current processor.
+     *
+     * Causes the calling thread to yield its execution on the current processor,
+     * typically by issuing a processor-specific pause instruction. This is useful
+     * in spin-wait loops to improve performance and reduce power consumption.
+     *
+     * On Windows, this uses the YieldProcessor intrinsic from the WinAPI.
+     */
+    RUNTIME_API void YieldCurrentProcessor();
+
 } // namespace Runtime::System
