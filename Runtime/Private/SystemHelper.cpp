@@ -62,4 +62,9 @@ namespace Runtime::System
     {
         return Windows::GetCurrentThreadId();
     }
+
+    void YieldCurrentProcessor()
+    {
+        Windows::YieldCurrentProcessor();
+    }
 } // namespace Runtime::System

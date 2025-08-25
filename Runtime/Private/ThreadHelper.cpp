@@ -6,9 +6,9 @@ namespace Runtime::Parallel
 
     Thread::~Thread()
     {
-        if (!IsJoinable() && options_.enableAutoJoin)
+        if (IsJoinable() && options_.enableAutoJoin)
         {
-            System::JoinThread(handle_);
+            Join();
             return;
         }
 

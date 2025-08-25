@@ -97,8 +97,8 @@ namespace Runtime::System::Windows
     void* CreateThread(Runtime::Parallel::ThreadOptionsHelper& refThreadOptions)
     {
         return ::CreateThread(nullptr, static_cast<SIZE_T>(refThreadOptions.stackSize), refThreadOptions.startAddress,
-                              refThreadOptions.paramsAddress, refThreadOptions.isSuspendedOnStart ? CREATE_SUSPENDED : 0,
-                              &refThreadOptions.threadId);
+                              refThreadOptions.paramsAddress,
+                              refThreadOptions.isSuspendedOnStart ? CREATE_SUSPENDED : 0, &refThreadOptions.threadId);
     }
 
     void JoinThread(void* thread)
@@ -114,17 +114,25 @@ namespace Runtime::System::Windows
 
     void SuspendThread(void* thread)
     {
-        ::SuspendThread(thread);
+        if (::SuspendThread(thread) == -1)
+        {
+            RUNTIME_LOG_CRITICAL(LogHelper::FileLoggerName, StaticString::FailedToSuspendThreadMessage, thread);
+            RUNTIME_CONSOLE_LOG_CRITICAL(StaticString::FailedToSuspendThreadMessage, thread);
+        }
     }
 
     void ResumeThread(void* thread)
     {
-        ::ResumeThread(thread);
+        if (::ResumeThread(thread) == -1)
+        {
+            RUNTIME_LOG_CRITICAL(LogHelper::FileLoggerName, StaticString::FailedToResumeThreadMessage, thread);
+            RUNTIME_CONSOLE_LOG_CRITICAL(StaticString::FailedToResumeThreadMessage, thread);
+        }
     }
 
     void YieldThread()
     {
-        if (!::SwitchToThread())
+        if (::SwitchToThread() == 0)
         {
             RUNTIME_LOG_CRITICAL(LogHelper::FileLoggerName, StaticString::FailedToSwitchThreadMessage);
             RUNTIME_CONSOLE_LOG_CRITICAL(StaticString::FailedToSwitchThreadMessage);
@@ -135,4 +143,10 @@ namespace Runtime::System::Windows
     {
         return ::GetCurrentThreadId();
     }
+
+    void YieldCurrentProcessor()
+    {
+        YieldProcessor();
+    }
+
 } // namespace Runtime::System::Windows
