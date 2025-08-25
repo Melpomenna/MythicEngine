@@ -21,10 +21,6 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '3.31.6'
-      - name: Install vcredist
-        run: |
-          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile "vc_redist.x64.exe"
-          Start-Process -FilePath "vc_redist.x64.exe" -ArgumentList "/quiet" -Wait
       - name: Configure
         run: cmake --preset=x64-release
 
@@ -44,10 +40,10 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v2
+      - name: Setup MSVC
+        uses: microsoft/setup-msbuild@v1
         with:
-          cmake-version: '3.31.6'
+          vs-version: '17.8'
 
       - name: Run Tests
         env:
@@ -57,10 +53,10 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v2
+      - name: Setup MSVC
+        uses: microsoft/setup-msbuild@v1
         with:
-          cmake-version: '3.31.6'
+          vs-version: '17.8'
 
       - name: Run Benchmarks
         run: .\build\x64-release\WorkFolder\Benchmarks.exe
