@@ -12,7 +12,7 @@ steps:
   displayName: "Configurate"
   inputs:
     workingDirectory: 
-    cmakeArgs: '--preset=x64-release -DCMAKE_BUILD_ON_CI=ON'
+    cmakeArgs: '--preset=x64-release'
 - task: CMake@1
   displayName: "Build"
   inputs: 
@@ -24,14 +24,14 @@ steps:
     targetType: 'inline'
     script: |
         ctest --preset=x64-release --verbose
-    workingDirectory: $(Build.SourcesDirectory)
+    workingDirectory:
 - task: PowerShell@2
   displayName: "Benchmarks"
   inputs:
     targetType: 'inline'
     script: |
         .\build\x64-release\WorkFolder\Benchmarks.exe
-    workingDirectory: $(Build.SourcesDirectory)
+    workingDirectory:
 - task: ArchiveFiles@2
   displayName: "Create archive"
   inputs:

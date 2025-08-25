@@ -22,7 +22,7 @@ jobs:
         with:
           cmake-version: '3.31.6'
       - name: Configure
-        run: cmake --preset=x64-release  -DCMAKE_BUILD_ON_CI=ON
+        run: cmake --preset=x64-release
 
   build:
     runs-on: self-hosted
