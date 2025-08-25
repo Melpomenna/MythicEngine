@@ -50,8 +50,6 @@ jobs:
         env:
             MIMALLOC_VERBOSE: 1
         run: ctest --preset=x64-release
-        with:
-            minimum-approvals: 1
   benchmark:
     runs-on: self-hosted
     needs: build
@@ -63,8 +61,6 @@ jobs:
 
       - name: Run Benchmarks
         run: .\build\x64-release\WorkFolder\Benchmarks.exe
-        with:
-            minimum-approvals: 1
   archive:
     runs-on: self-hosted
     needs: [build, test, benchmark]
