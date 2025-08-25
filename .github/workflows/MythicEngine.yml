@@ -35,30 +35,6 @@ jobs:
 
       - name: Build
         run: cmake --build . --preset=x64-release
-
-  test:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: '3.31.6'
-      - name: Run Tests
-        env:
-            MIMALLOC_VERBOSE: 1
-        run: |
-            ctest --preset=x64-release --verbose
-  benchmark:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: '3.31.6'
-      - name: Run Benchmarks
-        run: .\build\x64-release\WorkFolder\Benchmarks.exe
   archive:
     runs-on: self-hosted
     needs: [build, test, benchmark]

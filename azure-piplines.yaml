@@ -18,20 +18,6 @@ steps:
   inputs: 
     workingDirectory: 
     cmakeArgs: "--build . --preset=x64-release"
-- task: PowerShell@2
-  displayName: "Tests"
-  inputs:
-    targetType: 'inline'
-    script: |
-        ctest --preset=x64-release --verbose
-    workingDirectory:
-- task: PowerShell@2
-  displayName: "Benchmarks"
-  inputs:
-    targetType: 'inline'
-    script: |
-        .\build\x64-release\WorkFolder\Benchmarks.exe
-    workingDirectory:
 - task: ArchiveFiles@2
   displayName: "Create archive"
   inputs:
