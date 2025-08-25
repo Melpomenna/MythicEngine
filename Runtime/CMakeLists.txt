@@ -27,7 +27,7 @@ target_link_libraries(${target} PRIVATE
 )
 
 target_link_libraries(${target} PUBLIC
-						mimalloc-static
+						mimalloc
 )
 
 target_include_directories(${target} PRIVATE 

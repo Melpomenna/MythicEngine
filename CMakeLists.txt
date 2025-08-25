@@ -14,5 +14,11 @@ SetCompileOptions()
 add_subdirectory(External)
 add_subdirectory(Runtime)
 add_subdirectory(App)
-add_subdirectory(Tests)
-add_subdirectory(Benchmarks)
+
+if (MYTHIC_ENGINE_BUILD_TESTS)
+	add_subdirectory(Tests)
+endif()
+
+if (MYTHIC_ENGINE_BUILD_BENCHMARKS)
+	add_subdirectory(Benchmarks)
+endif()
