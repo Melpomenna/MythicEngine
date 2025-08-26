@@ -16,34 +16,49 @@
 
 #pragma once
 
-#if !defined(RUNTIME_EXPORT)
-/**
- * @def RUNTIME_API
- * @brief Marks symbols for import from a DLL.
- *
- * If RUNTIME_EXPORT is not defined, symbols are imported from a DLL.
- */
-#define RUNTIME_API __declspec(dllimport)
+#if defined(_WIN32) || defined(_WIN64)
+    #define RUNTIME_PLATFORM_WINDOWS 1
 #else
-/**
- * @def RUNTIME_API
- * @brief Marks symbols for export to a DLL.
- *
- * If RUNTIME_EXPORT is defined, symbols are exported to a DLL.
- */
-#define RUNTIME_API __declspec(dllexport)
+    #define RUNTIME_PLATFORM_WINDOWS 0
+#endif
+
+#if RUNTIME_PLATFORM_WINDOWS
+    #if !defined(RUNTIME_EXPORT)
+    /**
+
+    * @brief Marks symbols for import * @def RUNTIME_API from a DLL.
+    *
+    * If RUNTIME_EXPORT is not defined, symbols are imported from a DLL.
+    */
+    #define RUNTIME_API __declspec(dllimport)
+    #else
+    /**
+     * @def RUNTIME_API
+     * @brief Marks symbols for export to a DLL.
+     *
+     * If RUNTIME_EXPORT is defined, symbols are exported to a DLL.
+     */
+    #define RUNTIME_API __declspec(dllexport)
+    #endif
+#else
+    #define RUNTIME_API __attribute__((visibility("default")))
 #endif
 
 /**
  * @def RUNTIME_ETW_ALLOCATOR
  * @brief Marks functions as allocators for ETW (Event Tracing for Windows).
  */
-#define RUNTIME_ETW_ALLOCATOR __declspec(allocator)
+#if RUNTIME_PLATFORM_WINDOWS
+    #define RUNTIME_ETW_ALLOCATOR __declspec(allocator)
+#else
+    #define RUNTIME_ETW_ALLOCATOR
+#endif
 
 /**
  * @def RUNTIME_NODISCARD
  * @brief Indicates that the return value of a function should not be discarded.
  */
+
 #define RUNTIME_NODISCARD [[nodiscard]]
 
 /**
