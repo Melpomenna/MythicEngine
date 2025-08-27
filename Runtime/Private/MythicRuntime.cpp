@@ -14,20 +14,8 @@ namespace Runtime
 {
     bool InitRuntime()
     {
-        // clang-format off
-        std::initializer_list<mi_option_t> options = {
-#if defined (_DEBUG)
-                                                      mi_option_show_stats,
-                                                      mi_option_show_errors,
-                                                      mi_option_verbose,
-#endif
-                                                      mi_option_reserve_huge_os_pages
-        };
-        // clang-format on
-        for (const auto& option : options)
-        {
-            mi_option_set_enabled(option, true);
-        }
+        System::InitProcessInfoHelper(SingletoneHelper<System::ProcessInfoHelper>::Instance());
+        Memory::initOptions();
         System::EnableLFHHeap();
 
         quill::BackendOptions backendOptions;
@@ -75,6 +63,7 @@ namespace Runtime
     bool ShutdownRuntime()
     {
         SingletoneHelper<Runtime::Parallel::CpuMaskHelper>::Destroy();
+        SingletoneHelper<System::ProcessInfoHelper>::Destroy();
         RUNTIME_LOG_TRACE_L3(LogHelper::FileLoggerName, StaticString::RuntimeSuccessfullShutdownMessage);
         RUNTIME_CONSOLE_LOG_DEBUG(StaticString::RuntimeSuccessfullShutdownMessage);
         quill::Backend::stop();

@@ -153,6 +153,8 @@ namespace Runtime::Parallel
          */
         RUNTIME_NODISCARD RUNTIME_API const ThreadOptionsHelper& GetOptions() const noexcept;
 
+        RUNTIME_NODISCARD RUNTIME_API static unsigned int HardwareConcurent() noexcept;
+
     private:
         /**
          * @brief Runs a function in the thread.

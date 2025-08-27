@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <type_traits>
 
 /**
@@ -36,7 +37,8 @@ namespace Runtime
         {
             if (!instance_)
             {
-                instance_ = new (mem_) T(std::forward<Args>(args)...);
+                instance_ = reinterpret_cast<T*>(mem_);
+                std::construct_at(instance_, std::forward<Args>(args)...);
             }
             return instance_;
         }
@@ -65,11 +67,18 @@ namespace Runtime
         /**
          * @brief Aligned storage for the singleton instance.
          */
-        static inline alignas(T) char mem_[sizeof(T)];
+        static alignas(T) char mem_[sizeof(T)];
 
         /**
          * @brief Pointer to the singleton instance.
          */
-        static inline T* instance_{nullptr};
+        static T* instance_;
     };
+
+    // Definition outside the class, with alignas(T) attribute.
+    template <class T>
+    alignas(T) char SingletoneHelper<T>::mem_[sizeof(T)]{};
+
+    template <class T>
+    T* SingletoneHelper<T>::instance_ = nullptr;
 } // namespace Runtime

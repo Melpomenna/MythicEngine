@@ -115,4 +115,8 @@ namespace Runtime::Parallel
         RUNTIME_CONSOLE_LOG_CRITICAL(Runtime::StaticString::ExceptionInThreadFunctionMessage);
     }
 
+    unsigned int Thread::HardwareConcurent() noexcept
+    {
+        return Runtime::System::HardwareConcurent();
+    }
 } // namespace Runtime::Parallel

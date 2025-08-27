@@ -1,4 +1,5 @@
 #include "SystemHelper.h"
+#include "Singletone.h"
 #include "Windows/System.h"
 
 namespace Runtime::System
@@ -66,5 +67,16 @@ namespace Runtime::System
     void YieldCurrentProcessor()
     {
         Windows::YieldCurrentProcessor();
+    }
+
+    unsigned int HardwareConcurent()
+    {
+        return static_cast<unsigned int>(
+            Runtime::SingletoneHelper<ProcessInfoHelper>::Instance()->logicalCoresProcessCount);
+    }
+
+    void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper)
+    {
+        Windows::InitProcessInfoHelper(processInfoHelper);
     }
 } // namespace Runtime::System

@@ -149,4 +149,93 @@ namespace Runtime::System::Windows
         YieldProcessor();
     }
 
+    void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper)
+    {
+        PSYSTEM_LOGICAL_PROCESSOR_INFORMATION pBuffer = nullptr;
+        DWORD nLength = 0;
+        if (!GetLogicalProcessorInformation(pBuffer, &nLength))
+        {
+            pBuffer = static_cast<PSYSTEM_LOGICAL_PROCESSOR_INFORMATION>(malloc(nLength));
+            if (!GetLogicalProcessorInformation(pBuffer, &nLength))
+            {
+                return;
+            }
+        }
+        if (!pBuffer)
+        {
+            return;
+        }
+        DWORD byteOffset = 0;
+        PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = pBuffer;
+        while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= nLength)
+        {
+            switch (pBuffer->Relationship)
+            {
+            case RelationProcessorCore:
+                {
+                    processInfoHelper->physicalCoresProcessCount++;
+                    processInfoHelper->logicalCoresProcessCount +=
+                        static_cast<int>(_mm_popcnt_u64(static_cast<unsigned long long>(pBuffer->ProcessorMask)));
+                    break;
+                }
+            case RelationNumaNode:
+                {
+                    processInfoHelper->numaNodesCount++;
+                    break;
+                }
+            case RelationCache:
+                {
+                    processInfoHelper->caches = reinterpret_cast<System::ProcessInfoHelper::Cache*>(
+                        realloc(processInfoHelper->caches,
+                                sizeof(System::ProcessInfoHelper::Cache) * (++processInfoHelper->cachesCount)));
+                    if (!processInfoHelper->caches)
+                        return;
+                    PCACHE_DESCRIPTOR Cache = &pBuffer->Cache;
+                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].level =
+                        static_cast<int>(Cache->Level);
+                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].associativity = Cache->Associativity;
+                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].lineSize = Cache->LineSize;
+                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].size = Cache->Size;
+                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].type = Cache->Type;
+                    processInfoHelper->l1CachesCount += Cache->Level == 1;
+                    processInfoHelper->l2CachesCount += Cache->Level == 2;
+                    processInfoHelper->l3CachesCount += Cache->Level == 3;
+                    break;
+                }
+            case RelationProcessorPackage:
+                {
+                    processInfoHelper->processorCorePackageCount++;
+                    break;
+                }
+            case RelationGroup:
+                {
+                    break;
+                }
+            case RelationProcessorDie:
+                {
+                    break;
+                }
+            case RelationNumaNodeEx:
+                {
+                    break;
+                }
+            case RelationProcessorModule:
+                {
+                    break;
+                }
+            case RelationAll:
+                {
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+            }
+            byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+            pBuffer++;
+        }
+        free(ptr);
+    }
+
 } // namespace Runtime::System::Windows

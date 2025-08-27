@@ -18,6 +18,11 @@ namespace Runtime::Parallel
      * @brief Helper structure for configuring thread options.
      */
     struct ThreadOptionsHelper;
+} // namespace Runtime::Parallel
+
+namespace Runtime::System
+{
+    struct ProcessInfoHelper;
 }
 
 /**
@@ -26,6 +31,7 @@ namespace Runtime::Parallel
  */
 namespace Runtime::System::Windows
 {
+
     /**
      * @brief Sets a handler for unhandled exceptions.
      * @param pUnhandledExceptionHandler Pointer to the exception handler function.
@@ -108,4 +114,27 @@ namespace Runtime::System::Windows
      * On Windows, this uses the YieldProcessor intrinsic from the WinAPI.
      */
     RUNTIME_API void YieldCurrentProcessor();
+
+    /**
+     * @brief Returns the number of concurrent hardware threads supported by the system.
+     *
+     * This function queries the system for the number of hardware threads (logical processors)
+     * that are available for parallel execution. It is typically used to determine the optimal
+     * number of threads to use for parallel algorithms or thread pools.
+     *
+     * @return The number of concurrent hardware threads supported by the system.
+     */
+    RUNTIME_NODISCARD RUNTIME_API unsigned int HardwareConcurent();
+
+    /**
+     * @brief Initializes the specified ProcessInfoHelper structure with system information.
+     *
+     * This function populates the given ProcessInfoHelper instance with details about the
+     * system's processor caches, NUMA nodes, logical and physical core counts, and other
+     * relevant hardware information. It should be called before accessing any fields of
+     * ProcessInfoHelper that depend on system-specific data.
+     *
+     * @param processInfoHelper Pointer to the ProcessInfoHelper structure to initialize.
+     */
+    RUNTIME_API void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper);
 } // namespace Runtime::System::Windows

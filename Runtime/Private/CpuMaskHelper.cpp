@@ -1,7 +1,7 @@
 #include "CpuMaskHelper.h"
 
-#include <thread>
 #include "LogWrapper.h"
+#include "SystemHelper.h"
 
 namespace Runtime::Parallel
 {
@@ -9,7 +9,7 @@ namespace Runtime::Parallel
     CpuMaskHelper& CpuMaskHelper::SetCore(int core) & noexcept
     {
         RUNTIME_ASSERT((core < static_cast<int>(sizeof(mask_) * 8) &&
-                        core <= static_cast<int>(std::thread::hardware_concurrency())));
+                        core <= static_cast<int>(Runtime::System::HardwareConcurent())));
         mask_ |= (1 << core);
         return *this;
     }
@@ -34,7 +34,7 @@ namespace Runtime::Parallel
     bool CpuMaskHelper::HasCore(int core) const& noexcept
     {
         RUNTIME_ASSERT((core < static_cast<int>(sizeof(mask_) * 8) &&
-                        core <= static_cast<int>(std::thread::hardware_concurrency())));
+                        core <= static_cast<int>(Runtime::System::HardwareConcurent())));
         return (mask_ & (1 << core)) != 0;
     }
 } // namespace Runtime::Parallel

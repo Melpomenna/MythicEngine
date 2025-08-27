@@ -20,10 +20,17 @@ add_library(${target} SHARED
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/ThreadHelper.h
 	${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/ThreadHelper.cpp
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/QuillLoggerHelper.h
+	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/ThreadPool.h
+	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/MimallocHelper.h
+	${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/MimallocHelper.cpp
+	${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/MallocHelper.cpp
 )
 
 target_link_libraries(${target} PRIVATE 
 						quill
+)
+
+target_link_libraries(${target} PUBLIC
 						mimalloc
 )
 
