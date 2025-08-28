@@ -1,5 +1,5 @@
 #include "CoreRuntime.h"
-#include "LogWrapper.h"
+#include "Log/LogWrapper.h"
 #include "MythicRuntime.h"
 #include "StaticString.h"
 

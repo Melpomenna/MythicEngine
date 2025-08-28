@@ -1,7 +1,7 @@
 ﻿#include "Windows/System.h"
-#include "LogWrapper.h"
+#include "Log/LogWrapper.h"
+#include "Parallel/ThreadHelper.h"
 #include "StaticString.h"
-#include "ThreadHelper.h"
 // clang-format off
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -238,4 +238,42 @@ namespace Runtime::System::Windows
         free(ptr);
     }
 
+
+    RUNTIME_API void SetThreadPriority(void* handle, ThreadPriority priority)
+    {
+        int nPriority = 0;
+        switch (priority)
+        {
+        case ThreadPriority::ModeBackgroundBegin:
+            nPriority = THREAD_MODE_BACKGROUND_BEGIN;
+            break;
+        case ThreadPriority::ModeBackgroundEnd:
+            nPriority = THREAD_MODE_BACKGROUND_END;
+            break;
+        case ThreadPriority::AboveNormal:
+            nPriority = THREAD_PRIORITY_ABOVE_NORMAL;
+            break;
+        case ThreadPriority::BelowNormal:
+            nPriority = THREAD_PRIORITY_BELOW_NORMAL;
+            break;
+        case ThreadPriority::High:
+            nPriority = THREAD_PRIORITY_HIGHEST;
+            break;
+        case ThreadPriority::Idle:
+            nPriority = THREAD_PRIORITY_IDLE;
+            break;
+        case ThreadPriority::Lowest:
+            nPriority = THREAD_PRIORITY_LOWEST;
+            break;
+        case ThreadPriority::Normal:
+            nPriority = THREAD_PRIORITY_NORMAL;
+            break;
+        case ThreadPriority::RealTime:
+            nPriority = THREAD_PRIORITY_TIME_CRITICAL;
+            break;
+        }
+        if (!::SetThreadPriority(handle, nPriority))
+        {
+        }
+    }
 } // namespace Runtime::System::Windows

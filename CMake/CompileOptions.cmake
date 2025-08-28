@@ -16,6 +16,7 @@ function(SetCompileOptions)
                             /analyze
                             /diagnostics:classic
                             /GL
+                            /GR-
                             /MP
                             /Qpar
                             /sdl
@@ -49,6 +50,7 @@ function(SetCompileOptions)
                             /arch:AVX2
                             /favor:INTEL64
                             /bigobj
+                            /GR-
                             /cgthreads2
                             /analyze
                             /diagnostics:classic

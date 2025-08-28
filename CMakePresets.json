@@ -18,6 +18,7 @@
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "MI_BUILD_TESTS": "OFF",
         "MI_SECURE": "ON",
+        "QUILL_X86ARCH":  "ON",
         "MYTHIC_ENGINE_BUILD_TESTS": "ON",
         "MYTHIC_ENGINE_BUILD_BENCHMARKS": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",

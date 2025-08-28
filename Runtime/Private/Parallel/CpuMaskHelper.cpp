@@ -1,7 +1,7 @@
-#include "CpuMaskHelper.h"
+#include "Parallel/CpuMaskHelper.h"
 
-#include "LogWrapper.h"
-#include "SystemHelper.h"
+#include "Log/LogWrapper.h"
+#include "System/SystemHelper.h"
 
 namespace Runtime::Parallel
 {

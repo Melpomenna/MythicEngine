@@ -1,7 +1,7 @@
 #pragma warning(disable : 4389 4245 4081 4389)
 #include <gtest/gtest.h>
 #include "CoreRuntime.h"
-#include "ThreadHelper.h"
+#include "Parallel/ThreadHelper.h"
 
 TEST(ThreadTest, StartAndJoinOneThreadSuccess)
 {

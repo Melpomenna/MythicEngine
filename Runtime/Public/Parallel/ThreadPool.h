@@ -2,7 +2,7 @@
 
 
 #include "Config.h"
-#include "ThreadHelper.h"
+#include "Parallel/ThreadHelper.h"
 
 namespace Runtime::Parallel
 {
@@ -10,11 +10,11 @@ namespace Runtime::Parallel
     class StaticThreadPool final
     {
     public:
-        StaticThreadPool(ThreadOptionsHelper&& options = ThreadOptionsHelper{.enableAutoJoin = true})
+        StaticThreadPool(ThreadOptionsHelper(options&)[ThreadsCount])
         {
             for (int i = 0; i < ThreadCount; ++i)
             {
-                workers = Thread(&StaticThreadPool::Schedule, options, this);
+                workers = Thread(&StaticThreadPool::Schedule, options[i], this);
             }
         }
 

@@ -1,5 +1,5 @@
-#include "ThreadHelper.h"
-#include "LogWrapper.h"
+#include "Parallel/ThreadHelper.h"
+#include "Log/LogWrapper.h"
 
 namespace Runtime::Parallel
 {

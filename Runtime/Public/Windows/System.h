@@ -6,6 +6,7 @@
  */
 
 #include "Config.h"
+#include "System/SystemEnumerations.h"
 
 /**
  * @namespace Runtime::Parallel
@@ -137,4 +138,6 @@ namespace Runtime::System::Windows
      * @param processInfoHelper Pointer to the ProcessInfoHelper structure to initialize.
      */
     RUNTIME_API void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper);
+
+    RUNTIME_API void SetThreadPriority(void* handle, ThreadPriority priority);
 } // namespace Runtime::System::Windows

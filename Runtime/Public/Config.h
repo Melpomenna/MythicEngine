@@ -57,3 +57,5 @@
  * @brief Provides a branch prediction hint that a condition is unlikely to be true.
  */
 #define RUNTIME_UNLIKELY [[unlikely]]
+
+#define RUNTIME_NO_VTABLE __declspec(novtable)

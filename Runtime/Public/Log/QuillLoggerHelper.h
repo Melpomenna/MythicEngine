@@ -19,3 +19,10 @@
 #include <quill/Logger.h> /**< Quill logger class */
 #include <quill/sinks/ConsoleSink.h> /**< Quill sink for console output */
 #include <quill/sinks/FileSink.h> /**< Quill sink for file output */
+
+namespace Runtime::LogHelper::Quill
+{
+    void initLogger();
+    void stopLogger();
+
+} // namespace Runtime::LogHelper::Quill

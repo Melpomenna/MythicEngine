@@ -1,4 +1,4 @@
-#include "SystemHelper.h"
+#include "System/SystemHelper.h"
 #include "Singletone.h"
 #include "Windows/System.h"
 
@@ -78,5 +78,10 @@ namespace Runtime::System
     void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper)
     {
         Windows::InitProcessInfoHelper(processInfoHelper);
+    }
+
+    void SetThreadPriority(void* handle, ThreadPriority priority)
+    {
+        Windows::SetThreadPriority(handle, priority);
     }
 } // namespace Runtime::System

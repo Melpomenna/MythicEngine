@@ -9,6 +9,8 @@
  * @date 27.08.2025
  */
 
+#pragma once
+
 namespace Runtime::Memory::Mimalloc
 {
     /**

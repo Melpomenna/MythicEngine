@@ -28,7 +28,7 @@ BreakConstructorInitializers: AfterColon
 BreakConstructorInitializersBeforeComma: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 IncludeCategories:
-  - Regex: '^"MallocHelper.*'
+  - Regex: '^"Memory/MallocHelper.*'
     Priority: 0
   - Regex: '^<.*'
     Priority: 2

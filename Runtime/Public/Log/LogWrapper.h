@@ -11,7 +11,8 @@
 #pragma once
 
 #include <string_view>
-#include "QuillLoggerHelper.h"
+#include "Log/Loggers.h"
+#include "Log/QuillLoggerHelper.h"
 #include "StaticString.h"
 
 /**
@@ -48,23 +49,6 @@
 #define RUNTIME_LOG_WARNING(logger, fmt, ...) LOG_WARNING(quill::Frontend::get_logger(logger), fmt, __VA_ARGS__)
 #define RUNTIME_LOG_ERROR(logger, fmt, ...) LOG_ERROR(quill::Frontend::get_logger(logger), fmt, __VA_ARGS__)
 #define RUNTIME_LOG_CRITICAL(logger, fmt, ...) LOG_CRITICAL(quill::Frontend::get_logger(logger), fmt, __VA_ARGS__)
-
-/**
- * @namespace Runtime::LogHelper
- * @brief Contains logger name constants for the Runtime module.
- */
-namespace Runtime::LogHelper
-{
-    /**
-     * @brief Name of the console logger.
-     */
-    static inline constexpr char ConsoleLoggerName[] = "console";
-    /**
-     * @brief Name of the file logger.
-     */
-    static inline constexpr char FileLoggerName[] = "file";
-
-} // namespace Runtime::LogHelper
 
 #if defined(_DEBUG)
 /**
