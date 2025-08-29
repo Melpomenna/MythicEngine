@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MimallocHelper.h"
+
 /**
  * @file MallocHelper.h
  * @brief Memory allocation helper functions for the Runtime module.

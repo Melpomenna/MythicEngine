@@ -1,4 +1,5 @@
 #pragma warning(disable : 4389 4245 4081 4389)
+#include "Memory/MallocHelper.h"
 #include <gtest/gtest.h>
 #include "CoreRuntime.h"
 #include "Parallel/ThreadHelper.h"
@@ -79,7 +80,7 @@ TEST(ThreadTest, StartAndDetachThread)
     EXPECT_FALSE(worker.HasException());
     while (worker.GetValue<int>() == nullptr)
     {
-        Runtime::System::YieldCurrentProcessor();       
+        Runtime::System::YieldCurrentProcessor();
     }
     EXPECT_TRUE(worker.GetValue<int>() != nullptr);
     EXPECT_EQ(*worker.GetValue<int>(), 0);

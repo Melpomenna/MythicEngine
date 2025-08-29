@@ -45,6 +45,7 @@
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
+        "MI_TRACK_ETW": "ON",
         "MI_TRACK_ASAN": "ON",
         "MI_DEBUG_FULL": "ON",
         "QUILL_SANITIZE_ADDRESS": "ON"

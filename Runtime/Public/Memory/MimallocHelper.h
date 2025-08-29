@@ -11,6 +11,13 @@
 
 #pragma once
 
+#pragma push_macro("_expand")
+#undef _expand
+
+#include <mimalloc.h>
+
+#pragma pop_macro("_expand")
+
 namespace Runtime::Memory::Mimalloc
 {
     /**
@@ -20,4 +27,8 @@ namespace Runtime::Memory::Mimalloc
      * options before any allocations are performed.
      */
     void initOptions();
+
+    template <class T>
+    using MiAllocator = mi_stl_allocator<T>;
+
 } // namespace Runtime::Memory::Mimalloc

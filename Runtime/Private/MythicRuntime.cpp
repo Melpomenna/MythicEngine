@@ -1,9 +1,9 @@
 #include "Memory/MallocHelper.h"
-#include "MythicRuntime.h"
 #include <stacktrace> // TODO: Create own stacktrace helper
 #include <string_view>
 #include "Log/LogManager.h"
 #include "Log/LogWrapper.h"
+#include "MythicRuntime.h"
 #include "Parallel/CpuMaskHelper.h"
 #include "Singletone.h"
 #include "StaticString.h"

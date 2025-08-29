@@ -1,36 +1,39 @@
 #pragma once
 
 
+#include "Memory/MallocHelper.h"
+#include <vector>
 #include "Config.h"
 #include "Parallel/ThreadHelper.h"
 
 namespace Runtime::Parallel
 {
-    template <int ThreadsCount = Thread::HardwareConcurent()>
-    class StaticThreadPool final
+    class DynamicThreadPool final
     {
     public:
-        StaticThreadPool(ThreadOptionsHelper(options&)[ThreadsCount])
-        {
-            for (int i = 0; i < ThreadCount; ++i)
-            {
-                workers = Thread(&StaticThreadPool::Schedule, options[i], this);
-            }
-        }
+        DynamicThreadPool();
 
-        StaticThreadPool(const StaticThreadPool& other) = delete;
-        StaticThreadPool& operator=(const StaticThreadPool& other) = delete;
+        DynamicThreadPool(const DynamicThreadPool& other) = delete;
+        DynamicThreadPool& operator=(const DynamicThreadPool& other) = delete;
+
+        DynamicThreadPool(DynamicThreadPool&& other) = default;
+        DynamicThreadPool& operator=(DynamicThreadPool&& other) = default;
+
+        ~DynamicThreadPool();
+
+        DynamicThreadPool& CreateThread(const ThreadOptionsHelper& options, int mask = 0x0);
+
+        int SendTask();
+
+        void WaitTask(int id);
+
+        void WaitAll();
 
     private:
-        void Schedule()
-        {
-        }
-        Thread workers[ThreadCount];
-    };
+        void Join();
 
-    class DynamicThreadPool
-    {
-    public:
-    private:
+        void Shcedule();
+
+        std::vector<Thread, Memory::Mimalloc::MiAllocator<Thread>> workers_;
     };
 } // namespace Runtime::Parallel

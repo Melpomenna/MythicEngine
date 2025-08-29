@@ -240,6 +240,10 @@ namespace Runtime::System
      */
     RUNTIME_API void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper);
 
-    RUNTIME_API void SetThreadPriority(void* handle, ThreadPriority priority);
+    RUNTIME_API void SetThreadPriority(Handle handle, ThreadPriority priority);
+
+    RUNTIME_NODISCARD RUNTIME_API Handle CreateEvent();
+    RUNTIME_API void WaitForSingleObject(Handle handle);
+    RUNTIME_API void CloseHandle(Handle handle);
 
 } // namespace Runtime::System

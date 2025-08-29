@@ -14,4 +14,6 @@ namespace Runtime::System
         Normal,
         RealTime
     };
+
+    using Handle = void*;
 } // namespace Runtime::System
