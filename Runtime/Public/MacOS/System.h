@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @file SystemMac.h
+ * @file System.h
  * @brief Windows-specific system utilities and threading API for the Runtime library.
  */
 
@@ -24,7 +24,7 @@ namespace Runtime::Parallel
  * @namespace Runtime::System::Windows
  * @brief Windows-specific system and threading functions.
  */
-namespace Runtime::System::Windows
+namespace Runtime::System::MacOS
 {
     /**
      * @brief Sets a handler for unhandled exceptions.

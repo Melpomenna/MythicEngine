@@ -13,14 +13,29 @@ add_library(${target} SHARED
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/CoreRuntime.h
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/SystemHelper.h
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/StaticString.h
-	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/Windows/System.h
 	${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/SystemHelper.cpp
-	${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/Windows/System.cpp
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/MallocHelper.h
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/ThreadHelper.h
 	${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/ThreadHelper.cpp
 	${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/QuillLoggerHelper.h
 )
+
+
+# для Windows
+if(WIN32) | (WIN64)
+    list(APPEND SOURCES
+        ${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/Windows/System.h
+        ${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/Windows/System.cpp
+    )
+endif()
+
+#для macOS
+if(APPLE)
+    list(APPEND SOURCES
+        ${RUNTIME_PUBLIC_INCLUDE_DIRECTORY}/MacOS/System.h
+        ${RUNTIME_PRIVATE_INCLUDE_DIRECTORY}/MacOS/System.cpp
+    )
+endif()
 
 target_link_libraries(${target} PRIVATE 
 						quill
