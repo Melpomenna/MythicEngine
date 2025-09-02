@@ -20,11 +20,11 @@ namespace Runtime::Parallel
     struct ThreadOptionsHelper final
     {
         /// Function pointer type for thread start routine.
-        using StartAddressFuncType = unsigned long(__stdcall*)(void*);
+        using StartAddressFuncType = unsigned long(RUNTIME_STD_CALL*)(void*);
         StartAddressFuncType startAddress{nullptr}; ///< Pointer to thread start function.
         void* paramsAddress{nullptr}; ///< Pointer to parameters for the thread function.
-        unsigned long long stackSize{0}; ///< Stack size for the thread.
-        unsigned long threadId{0}; ///< Thread identifier.
+        UI64 stackSize{0}; ///< Stack size for the thread.
+        UI64 threadId{0}; ///< Thread identifier.
         bool isSuspendedOnStart{false}; ///< If true, thread starts suspended.
         bool enableAutoJoin{false}; ///< If true, thread will auto-join on destruction.
     };
@@ -133,7 +133,7 @@ namespace Runtime::Parallel
          * @brief Gets the thread identifier.
          * @return Thread ID.
          */
-        RUNTIME_NODISCARD RUNTIME_API unsigned long GetThreadId() const noexcept;
+        RUNTIME_NODISCARD RUNTIME_API UI64 GetThreadId() const noexcept;
 
         /**
          * @brief Checks if the thread is joinable.
@@ -145,7 +145,7 @@ namespace Runtime::Parallel
          * @brief Gets the native thread handle.
          * @return Pointer to the thread handle.
          */
-        RUNTIME_NODISCARD RUNTIME_API void* GetHandle() const noexcept;
+        RUNTIME_NODISCARD RUNTIME_API Handle GetHandle() const noexcept;
 
         /**
          * @brief Gets the thread options used for creation.
@@ -153,7 +153,7 @@ namespace Runtime::Parallel
          */
         RUNTIME_NODISCARD RUNTIME_API const ThreadOptionsHelper& GetOptions() const noexcept;
 
-        RUNTIME_NODISCARD RUNTIME_API static unsigned int HardwareConcurent() noexcept;
+        RUNTIME_NODISCARD RUNTIME_API static UI16 HardwareConcurent() noexcept;
 
     private:
         /**
@@ -189,13 +189,13 @@ namespace Runtime::Parallel
          * @brief Logs a message when a thread is created.
          * @param threadId The ID of the created thread.
          */
-        RUNTIME_API static void MessageOnThreadCreate(int threadId);
+        RUNTIME_API static void MessageOnThreadCreate(UI64 threadId);
 
         /**
          * @brief Logs a message when thread creation fails.
          * @param handle The thread handle.
          */
-        RUNTIME_API static void MessageOnThreadCreateFailed(void* handle);
+        RUNTIME_API static void MessageOnThreadCreateFailed(Handle handle);
 
         /**
          * @brief Logs a message when an exception occurs in the thread.
@@ -260,7 +260,7 @@ namespace Runtime::Parallel
         }
 
         ThreadOptionsHelper options_; ///< Thread creation options.
-        void* handle_{nullptr}; ///< Native thread handle.
+        Handle handle_{RUNTIME_HANDLE_INIT}; ///< Native thread handle.
         ThreadProvaider valueProvaider_; ///< Provider for result or exception.
     };
 } // namespace Runtime::Parallel

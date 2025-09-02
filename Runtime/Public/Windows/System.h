@@ -7,6 +7,7 @@
 
 #include "Config.h"
 #include "System/SystemEnumerations.h"
+#include "Types.h"
 
 /**
  * @namespace Runtime::Parallel
@@ -56,7 +57,7 @@ namespace Runtime::System::Windows
      * @param pThread Pointer to the thread object.
      * @param mask Affinity mask to set.
      */
-    RUNTIME_API void SetThreadAffinityMask(void* pThread, unsigned int mask);
+    RUNTIME_API void SetThreadAffinityMask(void* pThread, UI32 mask);
 
     /**
      * @brief Creates a new thread with the specified options.
@@ -69,25 +70,25 @@ namespace Runtime::System::Windows
      * @brief Joins the specified thread, blocking until it finishes execution.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void JoinThread(void* thread);
+    RUNTIME_API void JoinThread(Handle thread);
 
     /**
      * @brief Detaches the specified thread, allowing it to run independently.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void DetachThread(void* thread);
+    RUNTIME_API void DetachThread(Handle thread);
 
     /**
      * @brief Suspends the specified thread.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void SuspendThread(void* thread);
+    RUNTIME_API void SuspendThread(Handle thread);
 
     /**
      * @brief Resumes the specified suspended thread.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void ResumeThread(void* thread);
+    RUNTIME_API void ResumeThread(Handle thread);
 
     /**
      * @brief Enables the Low Fragmentation Heap (LFH) for improved memory allocation performance.
@@ -103,7 +104,7 @@ namespace Runtime::System::Windows
      * @brief Gets the identifier of the current thread.
      * @return The thread ID as an unsigned long.
      */
-    RUNTIME_NODISCARD RUNTIME_API unsigned long GetCurrentThreadId();
+    RUNTIME_NODISCARD RUNTIME_API UI64 GetCurrentThreadId();
 
     /**
      * @brief Yields execution of the current processor.
@@ -125,7 +126,7 @@ namespace Runtime::System::Windows
      *
      * @return The number of concurrent hardware threads supported by the system.
      */
-    RUNTIME_NODISCARD RUNTIME_API unsigned int HardwareConcurent();
+    RUNTIME_NODISCARD RUNTIME_API UI16 HardwareConcurent();
 
     /**
      * @brief Initializes the specified ProcessInfoHelper structure with system information.
@@ -139,5 +140,5 @@ namespace Runtime::System::Windows
      */
     RUNTIME_API void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper);
 
-    RUNTIME_API void SetThreadPriority(void* handle, ThreadPriority priority);
+    RUNTIME_API void SetThreadPriority(Handle handle, ThreadPriority priority);
 } // namespace Runtime::System::Windows

@@ -73,7 +73,7 @@ namespace Runtime::Parallel
         return valueProvaider_.provaider.error_or(nullptr) != nullptr;
     }
 
-    unsigned long Thread::GetThreadId() const noexcept
+    UI64 Thread::GetThreadId() const noexcept
     {
         return options_.threadId;
     }
@@ -93,7 +93,7 @@ namespace Runtime::Parallel
         return options_;
     }
 
-    void Thread::MessageOnThreadCreate(int threadId)
+    void Thread::MessageOnThreadCreate(UI64 threadId)
     {
 
         RUNTIME_CONSOLE_LOG_INFO(Runtime::StaticString::ThreadCreateSuccessMessage, threadId);
@@ -101,7 +101,7 @@ namespace Runtime::Parallel
                          threadId);
     }
 
-    void Thread::MessageOnThreadCreateFailed([[maybe_unused]] void* handle)
+    void Thread::MessageOnThreadCreateFailed([[maybe_unused]] Handle handle)
     {
         RUNTIME_ASSERT(handle);
         RUNTIME_CONSOLE_LOG_CRITICAL(Runtime::StaticString::CannotCreateThreadMessage);
@@ -115,7 +115,7 @@ namespace Runtime::Parallel
         RUNTIME_CONSOLE_LOG_CRITICAL(Runtime::StaticString::ExceptionInThreadFunctionMessage);
     }
 
-    unsigned int Thread::HardwareConcurent() noexcept
+    UI16 Thread::HardwareConcurent() noexcept
     {
         return Runtime::System::HardwareConcurent();
     }

@@ -46,12 +46,12 @@ namespace Runtime::Parallel
 
     Spinlock::Spinlock()
     {
-        int v = sizeof(SpinlockImpl);
         impl_ = new (mem_) SpinlockImpl();
     }
 
     Spinlock::~Spinlock()
     {
+        impl_->~SpinlockImpl();
     }
 
     void Spinlock::lock()

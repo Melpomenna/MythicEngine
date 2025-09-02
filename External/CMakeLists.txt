@@ -8,4 +8,5 @@ if (MYTHIC_ENGINE_BUILD_BENCHMARKS)
 	add_subdirectory(benchmark)
 endif()
 
+add_subdirectory(glm)
 add_subdirectory(quill)

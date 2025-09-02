@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Types.h"
+
 namespace Runtime::System
 {
-    enum class ThreadPriority
+    enum class ThreadPriority : UI8
     {
         ModeBackgroundBegin,
         ModeBackgroundEnd,
@@ -14,6 +16,4 @@ namespace Runtime::System
         Normal,
         RealTime
     };
-
-    using Handle = void*;
 } // namespace Runtime::System

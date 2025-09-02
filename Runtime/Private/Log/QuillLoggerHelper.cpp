@@ -11,7 +11,7 @@ namespace Runtime::LogHelper::Quill
         quill::BackendOptions backendOptions;
 
         // Awailable log cores: 0,1
-        int logCpuAffinity = 0;
+        UI8 logCpuAffinity = 0;
         SingletoneHelper<Runtime::Parallel::CpuMaskHelper>::Instance()
             ->UseCore(0, logCpuAffinity)
             .UseCore(1, logCpuAffinity);

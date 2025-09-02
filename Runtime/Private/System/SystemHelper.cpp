@@ -19,7 +19,7 @@ namespace Runtime::System
         Windows::SetPureVirtualCallHandler(pureVirtualCallHandler);
     }
 
-    void SetThreadAffinityMask(void* thread, unsigned int mask)
+    void SetThreadAffinityMask(Handle thread, UI8 mask)
     {
         Windows::SetThreadAffinityMask(thread, mask);
     }
@@ -29,27 +29,27 @@ namespace Runtime::System
         Windows::EnableLFHHeap();
     }
 
-    void* CreateThread(Runtime::Parallel::ThreadOptionsHelper& threadOptions)
+    Handle CreateThread(Runtime::Parallel::ThreadOptionsHelper& threadOptions)
     {
         return Windows::CreateThread(threadOptions);
     }
 
-    void JoinThread(void* thread)
+    void JoinThread(Handle thread)
     {
         Windows::JoinThread(thread);
     }
 
-    void DetachThread(void* thread)
+    void DetachThread(Handle thread)
     {
         Windows::DetachThread(thread);
     }
 
-    void SuspendThread(void* thread)
+    void SuspendThread(Handle thread)
     {
         Windows::SuspendThread(thread);
     }
 
-    void ResumeThread(void* thread)
+    void ResumeThread(Handle thread)
     {
         Windows::ResumeThread(thread);
     }
@@ -59,7 +59,7 @@ namespace Runtime::System
         Windows::YieldThread();
     }
 
-    unsigned long GetCurrentThreadId()
+    UI64 GetCurrentThreadId()
     {
         return Windows::GetCurrentThreadId();
     }
@@ -69,10 +69,9 @@ namespace Runtime::System
         Windows::YieldCurrentProcessor();
     }
 
-    unsigned int HardwareConcurent()
+    UI16 HardwareConcurent()
     {
-        return static_cast<unsigned int>(
-            Runtime::SingletoneHelper<ProcessInfoHelper>::Instance()->logicalCoresProcessCount);
+        return static_cast<UI16>(Runtime::SingletoneHelper<ProcessInfoHelper>::Instance()->logicalCoresProcessCount);
     }
 
     void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper)
@@ -80,7 +79,7 @@ namespace Runtime::System
         Windows::InitProcessInfoHelper(processInfoHelper);
     }
 
-    void SetThreadPriority(void* handle, ThreadPriority priority)
+    void SetThreadPriority(Handle handle, ThreadPriority priority)
     {
         Windows::SetThreadPriority(handle, priority);
     }

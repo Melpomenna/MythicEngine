@@ -10,6 +10,7 @@
 
 #include "Config.h"
 #include "System/SystemEnumerations.h"
+#include "Types.h"
 
 /**
  * @namespace Runtime::Parallel
@@ -55,24 +56,24 @@ namespace Runtime::System
         struct Cache final
         {
             /**
-             * @brief Cache level (e.g., 1 for L1, 2 for L2, 3 for L3).
+             * @brief Cache size in bytes.
              */
-            int level = 0;
-
-            /**
-             * @brief Cache associativity (number of ways).
-             */
-            int associativity = 0;
+            UI64 size = 0;
 
             /**
              * @brief Cache line size in bytes.
              */
-            int lineSize = 0;
+            UI32 lineSize = 0;
 
             /**
-             * @brief Cache size in bytes.
+             * @brief Cache level (e.g., 1 for L1, 2 for L2, 3 for L3).
              */
-            int size = 0;
+            UI8 level = 0;
+
+            /**
+             * @brief Cache associativity (number of ways).
+             */
+            UI8 associativity = 0;
 
             /**
              * @brief Cache type.
@@ -85,7 +86,7 @@ namespace Runtime::System
              *   - 0: CacheUnknown
              * These correspond to the WinAPI cache type constants.
              */
-            int type = 0;
+            UI8 type = 0;
         };
 
         /**
@@ -96,42 +97,42 @@ namespace Runtime::System
         /**
          * @brief Number of L3 caches detected.
          */
-        int l3CachesCount = 0;
+        UI16 l3CachesCount = 0;
 
         /**
          * @brief Number of L2 caches detected.
          */
-        int l2CachesCount = 0;
+        UI16 l2CachesCount = 0;
 
         /**
          * @brief Number of L1 caches detected.
          */
-        int l1CachesCount = 0;
+        UI16 l1CachesCount = 0;
 
         /**
          * @brief Total number of caches detected.
          */
-        int cachesCount = 0;
+        UI16 cachesCount = 0;
 
         /**
          * @brief Number of NUMA nodes available to the process.
          */
-        int numaNodesCount = 0;
+        UI16 numaNodesCount = 0;
 
         /**
          * @brief Number of logical processor cores available to the process.
          */
-        int logicalCoresProcessCount = 0;
+        UI16 logicalCoresProcessCount = 0;
 
         /**
          * @brief Number of physical processor cores available to the process.
          */
-        int physicalCoresProcessCount = 0;
+        UI16 physicalCoresProcessCount = 0;
 
         /**
          * @brief Number of processor core packages available to the process.
          */
-        int processorCorePackageCount = 0;
+        UI16 processorCorePackageCount = 0;
     };
 
     /**
@@ -157,7 +158,7 @@ namespace Runtime::System
      * @param thread Pointer to the thread object.
      * @param mask Affinity mask value.
      */
-    RUNTIME_API void SetThreadAffinityMask(void* thread, unsigned int mask);
+    RUNTIME_API void SetThreadAffinityMask(Handle thread, UI8 mask);
 
     /**
      * @brief Creates a new thread with the specified options.
@@ -170,25 +171,25 @@ namespace Runtime::System
      * @brief Waits for the specified thread to finish execution.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void JoinThread(void* thread);
+    RUNTIME_API void JoinThread(Handle thread);
 
     /**
      * @brief Detaches the specified thread.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void DetachThread(void* thread);
+    RUNTIME_API void DetachThread(Handle thread);
 
     /**
      * @brief Suspends the specified thread.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void SuspendThread(void* thread);
+    RUNTIME_API void SuspendThread(Handle thread);
 
     /**
      * @brief Resumes the specified suspended thread.
      * @param thread Pointer to the thread object.
      */
-    RUNTIME_API void ResumeThread(void* thread);
+    RUNTIME_API void ResumeThread(Handle thread);
 
     /**
      * @brief Enables the Low Fragmentation Heap (LFH) for the process.
@@ -204,7 +205,7 @@ namespace Runtime::System
      * @brief Gets the identifier of the current thread.
      * @return The thread ID as an unsigned long.
      */
-    RUNTIME_NODISCARD RUNTIME_API unsigned long GetCurrentThreadId();
+    RUNTIME_NODISCARD RUNTIME_API UI64 GetCurrentThreadId();
 
     /**
      * @brief Yields execution of the current processor.
@@ -226,7 +227,7 @@ namespace Runtime::System
      *
      * @return The number of concurrent hardware threads supported by the system.
      */
-    RUNTIME_NODISCARD RUNTIME_API unsigned int HardwareConcurent();
+    RUNTIME_NODISCARD RUNTIME_API UI16 HardwareConcurent();
 
     /**
      * @brief Initializes the specified ProcessInfoHelper structure with system information.
@@ -241,9 +242,5 @@ namespace Runtime::System
     RUNTIME_API void InitProcessInfoHelper(ProcessInfoHelper* processInfoHelper);
 
     RUNTIME_API void SetThreadPriority(Handle handle, ThreadPriority priority);
-
-    RUNTIME_NODISCARD RUNTIME_API Handle CreateEvent();
-    RUNTIME_API void WaitForSingleObject(Handle handle);
-    RUNTIME_API void CloseHandle(Handle handle);
 
 } // namespace Runtime::System

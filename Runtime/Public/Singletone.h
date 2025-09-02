@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <type_traits>
+#include "Types.h"
 
 /**
  * @file Singletone.h
@@ -77,7 +78,7 @@ namespace Runtime
 
     // Definition outside the class, with alignas(T) attribute.
     template <class T>
-    alignas(T) char SingletoneHelper<T>::mem_[sizeof(T)]{};
+    alignas(T) Mem SingletoneHelper<T>::mem_[sizeof(T)]{};
 
     template <class T>
     T* SingletoneHelper<T>::instance_ = nullptr;

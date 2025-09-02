@@ -18,9 +18,12 @@
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "MI_BUILD_TESTS": "OFF",
         "MI_SECURE": "ON",
-        "QUILL_X86ARCH":  "ON",
+        "QUILL_X86ARCH": "ON",
         "MYTHIC_ENGINE_BUILD_TESTS": "ON",
         "MYTHIC_ENGINE_BUILD_BENCHMARKS": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "GLM_ENABLE_CXX_20": "ON",
+        "GLM_ENABLE_LANG_EXTENSIONS": "ON",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build/${presetName}/WorkFolder",
         "CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG": "${sourceDir}/build/${presetName}/WorkFolder",
@@ -28,7 +31,8 @@
         "BENCHMARK_ENABLE_GTEST_TESTS": "OFF",
         "BENCHMARK_ENABLE_TESTING": "OFF",
         "BENCHMARK_INSTALL_DOCS": "OFF",
-        "gtest_force_shared_crt": "ON"
+        "gtest_force_shared_crt": "ON",
+        "GLM_ENABLE_SIMD_AVX2": "ON"
       },
       "condition": {
         "lhs": "Windows",
@@ -60,7 +64,8 @@
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "MYTHIC_ENGINE_USE_PROFILE": "OFF"
+        "MYTHIC_ENGINE_USE_PROFILE": "OFF",
+        "GLM_ENABLE_FAST_MATH": "ON"
       }
     }
   ],

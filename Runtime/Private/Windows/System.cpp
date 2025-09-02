@@ -98,21 +98,22 @@ namespace Runtime::System::Windows
     {
         return ::CreateThread(nullptr, static_cast<SIZE_T>(refThreadOptions.stackSize), refThreadOptions.startAddress,
                               refThreadOptions.paramsAddress,
-                              refThreadOptions.isSuspendedOnStart ? CREATE_SUSPENDED : 0, &refThreadOptions.threadId);
+                              refThreadOptions.isSuspendedOnStart ? CREATE_SUSPENDED : 0,
+                              reinterpret_cast<unsigned long*>(&refThreadOptions.threadId));
     }
 
-    void JoinThread(void* thread)
+    void JoinThread(Handle thread)
     {
         ::WaitForSingleObject(thread, INFINITE);
         ::CloseHandle(thread);
     }
 
-    void DetachThread(void* thread)
+    void DetachThread(Handle thread)
     {
         ::CloseHandle(thread);
     }
 
-    void SuspendThread(void* thread)
+    void SuspendThread(Handle thread)
     {
         if (::SuspendThread(thread) == -1)
         {
@@ -121,7 +122,7 @@ namespace Runtime::System::Windows
         }
     }
 
-    void ResumeThread(void* thread)
+    void ResumeThread(Handle thread)
     {
         if (::ResumeThread(thread) == -1)
         {
@@ -139,7 +140,7 @@ namespace Runtime::System::Windows
         }
     }
 
-    unsigned long GetCurrentThreadId()
+    UI64 GetCurrentThreadId()
     {
         return ::GetCurrentThreadId();
     }
@@ -185,11 +186,12 @@ namespace Runtime::System::Windows
                 }
             case RelationCache:
                 {
-                    processInfoHelper->caches = reinterpret_cast<System::ProcessInfoHelper::Cache*>(
+                    System::ProcessInfoHelper::Cache* cache = reinterpret_cast<System::ProcessInfoHelper::Cache*>(
                         realloc(processInfoHelper->caches,
                                 sizeof(System::ProcessInfoHelper::Cache) * (++processInfoHelper->cachesCount)));
-                    if (!processInfoHelper->caches)
+                    if (!cache)
                         return;
+                    processInfoHelper->caches = cache;
                     PCACHE_DESCRIPTOR Cache = &pBuffer->Cache;
                     processInfoHelper->caches[processInfoHelper->cachesCount - 1].level =
                         static_cast<int>(Cache->Level);
@@ -241,7 +243,7 @@ namespace Runtime::System::Windows
 
     RUNTIME_API void SetThreadPriority(void* handle, ThreadPriority priority)
     {
-        int nPriority = 0;
+        UI32 nPriority = 0;
         switch (priority)
         {
         case ThreadPriority::ModeBackgroundBegin:

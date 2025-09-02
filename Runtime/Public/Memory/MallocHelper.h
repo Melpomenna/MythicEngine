@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MimallocHelper.h"
+#include "Types.h"
 
 /**
  * @file MallocHelper.h
@@ -16,4 +17,9 @@ namespace Runtime::Memory
      * for memory allocation routines used within the Runtime module.
      */
     void initOptions();
+
+    template <class T>
+    using DefaultAllocator = Mimalloc::MiAllocator<T>;
+
+    static constexpr inline UI64 CacheLine = 64;
 } // namespace Runtime::Memory

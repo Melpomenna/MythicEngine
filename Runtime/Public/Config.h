@@ -59,3 +59,9 @@
 #define RUNTIME_UNLIKELY [[unlikely]]
 
 #define RUNTIME_NO_VTABLE __declspec(novtable)
+
+#if defined(_WIN32) || defined(_WIN64)
+#define RUNTIME_STD_CALL __stdcall
+#else
+#define RUNTIME_STD_CALL
+#endif

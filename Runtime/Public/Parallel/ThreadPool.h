@@ -1,10 +1,10 @@
 #pragma once
 
-
 #include "Memory/MallocHelper.h"
 #include <vector>
 #include "Config.h"
 #include "Parallel/ThreadHelper.h"
+#include "Types.h"
 
 namespace Runtime::Parallel
 {
@@ -21,19 +21,19 @@ namespace Runtime::Parallel
 
         ~DynamicThreadPool();
 
-        DynamicThreadPool& CreateThread(const ThreadOptionsHelper& options, int mask = 0x0);
+        DynamicThreadPool& CreateThread(const ThreadOptionsHelper& options, UI8 mask = 0x0);
 
-        int SendTask();
+        Int32 SendTask();
 
-        void WaitTask(int id);
+        void WaitTask(Int32 id);
 
         void WaitAll();
 
     private:
         void Join();
 
-        void Shcedule();
+        void Schedule();
 
-        std::vector<Thread, Memory::Mimalloc::MiAllocator<Thread>> workers_;
+        std::vector<Thread, Memory::DefaultAllocator<Thread>> workers_;
     };
 } // namespace Runtime::Parallel

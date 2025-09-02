@@ -11,112 +11,115 @@
 
 #pragma once
 
+#include "Types.h"
+
 namespace Runtime::StaticString
 {
 
     /**
      * @brief Message indicating successful initialization of the Runtime.
      */
-    static inline constexpr char RuntimeSuccessfullInitializedMessage[] = "Runtime initialized successfully.";
+    static inline constexpr Symbol RuntimeSuccessfullInitializedMessage[] = "Runtime initialized successfully.";
 
     /**
      * @brief Message indicating successful shutdown of the Runtime.
      */
-    static inline constexpr char RuntimeSuccessfullShutdownMessage[] = "Runtime shutdown successfully.";
+    static inline constexpr Symbol RuntimeSuccessfullShutdownMessage[] = "Runtime shutdown successfully.";
 
     /**
      * @brief Message indicating failure to initialize the Runtime.
      */
-    static inline constexpr char FailedToInitializeRuntimeMessage[] = "Failed to initialize Runtime.";
+    static inline constexpr Symbol FailedToInitializeRuntimeMessage[] = "Failed to initialize Runtime.";
 
     /**
      * @brief Message indicating failure to shutdown the Runtime.
      */
-    static inline constexpr char FailedToShutdownRuntimeMessage[] = "Failed to shutdown Runtime.";
+    static inline constexpr Symbol FailedToShutdownRuntimeMessage[] = "Failed to shutdown Runtime.";
 
     /**
      * @brief Name of the main thread for the RuntimeQuill system.
      */
-    static inline constexpr char RuntimeQuillMainThreadName[] = "RuntimeQuillMain";
+    static inline constexpr Symbol RuntimeQuillMainThreadName[] = "RuntimeQuillMain";
 
     /**
      * @brief Message for unhandled exceptions, including a placeholder for stack trace.
      */
-    static inline constexpr char SystemHandleExceptionMessage[] =
+    static inline constexpr Symbol SystemHandleExceptionMessage[] =
         "Unhandled exception in Runtime. Please check the logs for more details. stack trace:\n{}";
 
     /**
      * @brief Message indicating failure to create a dump file.
      */
-    static inline constexpr char FailedToCreateDumpFileMessage[] =
+    static inline constexpr Symbol FailedToCreateDumpFileMessage[] =
         "Failed to create dump file. Please check the logs for more details.";
 
     /**
      * @brief Format string for naming dump files.
      */
-    static inline constexpr char DumpFileFormatName[] = "runtime_crash_%04d%02d%02d_%02d%02d%02d_%d.dmp";
+    static inline constexpr Symbol DumpFileFormatName[] = "runtime_crash_%04d%02d%02d_%02d%02d%02d_%d.dmp";
 
     /**
      * @brief Name of the DbgHelp library.
      */
-    static inline constexpr char DbgHelpLibName[] = "DbgHelp.dll";
+    static inline constexpr Symbol DbgHelpLibName[] = "DbgHelp.dll";
 
     /**
      * @brief Name of the MiniDumpWriteDump function.
      */
-    static inline constexpr char MiniDumpWriteDumpFunctionName[] = "MiniDumpWriteDump";
+    static inline constexpr Symbol MiniDumpWriteDumpFunctionName[] = "MiniDumpWriteDump";
 
     /**
      * @brief Message indicating failure to load the DbgHelp library.
      */
-    static inline constexpr char CannotLoadDbgHelpLibMessage[] = "Cannot load dbghelp.dll";
+    static inline constexpr Symbol CannotLoadDbgHelpLibMessage[] = "Cannot load dbghelp.dll";
 
     /**
      * @brief Message indicating failure to get the MiniDumpWriteDump function.
      */
-    static inline constexpr char CannotGetMiniDumpWriteDumpFunctionMessage[] = "Cannot get MiniDumpWriteDump function";
+    static inline constexpr Symbol CannotGetMiniDumpWriteDumpFunctionMessage[] =
+        "Cannot get MiniDumpWriteDump function";
 
     /**
      * @brief Message for pure virtual function call errors.
      */
-    static inline constexpr char PureVirtualCallMessage[] = "Pure virtual function called.";
+    static inline constexpr Symbol PureVirtualCallMessage[] = "Pure virtual function called.";
 
     /**
      * @brief Message indicating failure to switch threads.
      */
-    static inline constexpr char FailedToSwitchThreadMessage[] =
+    static inline constexpr Symbol FailedToSwitchThreadMessage[] =
         "Failed to switch thread. Please check the logs for more details.";
 
     /**
      * @brief Message for assertion failures, with a placeholder for details.
      */
-    static inline constexpr char AssertionFailedMessage[] = "Assertion failed:{}";
+    static inline constexpr Symbol AssertionFailedMessage[] = "Assertion failed:{}";
 
     /**
      * @brief Message indicating failure to join a thread, with a placeholder for thread id.
      */
-    static inline constexpr char FailedToJoinThreadMessage[] =
+    static inline constexpr Symbol FailedToJoinThreadMessage[] =
         "Destroying thread object while thread is still joinable. Thread id: {}";
 
     /**
      * @brief Message indicating that a thread is not joinable.
      */
-    static inline constexpr char ThreadIsNotJoinableMessage[] = "Thread is not joinable";
+    static inline constexpr Symbol ThreadIsNotJoinableMessage[] = "Thread is not joinable";
 
     /**
      * @brief Message indicating successful thread creation, with a placeholder for thread id.
      */
-    static inline constexpr char ThreadCreateSuccessMessage[] = "Create thread with id {}";
+    static inline constexpr Symbol ThreadCreateSuccessMessage[] = "Create thread with id {}";
 
     /**
      * @brief Message indicating failure to create a thread.
      */
-    static inline constexpr char CannotCreateThreadMessage[] = "Cannot create thread";
+    static inline constexpr Symbol CannotCreateThreadMessage[] = "Cannot create thread";
 
     /**
      * @brief Message for exceptions thrown in thread functions.
      */
-    static inline constexpr char ExceptionInThreadFunctionMessage[] = "Exception in thread function";
+    static inline constexpr Symbol ExceptionInThreadFunctionMessage[] = "Exception in thread function";
 
     /**
      * @brief Message indicating failure to suspend a thread, with a placeholder for thread id.
@@ -124,7 +127,7 @@ namespace Runtime::StaticString
      * This message is used when the system fails to suspend a thread.
      * The placeholder '{}' should be replaced with the thread pointer.
      */
-    static inline constexpr char FailedToSuspendThreadMessage[] = "Cannot suspend thread {}";
+    static inline constexpr Symbol FailedToSuspendThreadMessage[] = "Cannot suspend thread {}";
 
     /**
      * @brief Message indicating failure to resume a thread, with a placeholder for thread id.
@@ -132,5 +135,5 @@ namespace Runtime::StaticString
      * This message is used when the system fails to resume a thread.
      * The placeholder '{}' should be replaced with the thread pointer.
      */
-    static inline constexpr char FailedToResumeThreadMessage[] = "Cannot resume thread {}";
+    static inline constexpr Symbol FailedToResumeThreadMessage[] = "Cannot resume thread {}";
 } // namespace Runtime::StaticString

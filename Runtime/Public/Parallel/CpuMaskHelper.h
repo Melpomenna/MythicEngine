@@ -60,14 +60,14 @@ namespace Runtime::Parallel
          * @param res Reference to an int to store the result.
          * @return Reference to this object.
          */
-        CpuMaskHelper& UseCore(int core, int& res) & noexcept;
+        CpuMaskHelper& UseCore(UI8 core, UI8& res) & noexcept;
 
         /**
          * @brief Checks if a specific core is set in the mask.
          * @param core The core index to check.
          * @return True if the core is set, false otherwise.
          */
-        bool HasCore(int core) const& noexcept;
+        bool HasCore(UI8 core) const& noexcept;
 
     private:
         /**
@@ -75,11 +75,11 @@ namespace Runtime::Parallel
          * @param core The core index to set.
          * @return Reference to this object.
          */
-        CpuMaskHelper& SetCore(int core) & noexcept;
+        CpuMaskHelper& SetCore(UI8 core) & noexcept;
 
         /**
          * @brief Bitmask representing the selected CPU cores.
          */
-        int mask_{0};
+        UI8 mask_{0};
     };
 } // namespace Runtime::Parallel
