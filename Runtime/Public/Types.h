@@ -25,7 +25,7 @@ using Handle = void*;
 using Handle = Int32;
 #endif
 
-#if !define(RUNTIME_HANDLE_INIT)
+#if !defined(RUNTIME_HANDLE_INIT)
 #if defined(_WIN32) || defined(_WIN64)
 #define RUNTIME_HANDLE_INIT nullptr
 #else

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Config.h"
+#include "Types.h"
 
 /**
  * @file CpuMaskHelper.h

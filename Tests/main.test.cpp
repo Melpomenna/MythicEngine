@@ -6,7 +6,7 @@
 
 TEST(ThreadTest, StartAndJoinOneThreadSuccess)
 {
-    int mainThreadId = Runtime::System::GetCurrentThreadId();
+    UI64 mainThreadId = Runtime::System::GetCurrentThreadId();
     Runtime::Parallel::Thread thread(
         [](int start)
         {
@@ -33,7 +33,7 @@ TEST(ThreadTest, StartAndJoinOneThreadSuccess)
 
 TEST(ThreadTest, StartAndJoinWithException)
 {
-    int mainThreadId = Runtime::System::GetCurrentThreadId();
+    UI64 mainThreadId = Runtime::System::GetCurrentThreadId();
     Runtime::Parallel::Thread worker{[]()
                                      {
                                          std::this_thread::sleep_for(std::chrono::microseconds(250));
@@ -64,7 +64,7 @@ TEST(ThreadTest, StartAndJoinWithException)
 
 TEST(ThreadTest, StartAndDetachThread)
 {
-    int mainThreadId = Runtime::System::GetCurrentThreadId();
+    UI64 mainThreadId = Runtime::System::GetCurrentThreadId();
     Runtime::Parallel::Thread worker{[]()
                                      {
                                          std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -88,7 +88,7 @@ TEST(ThreadTest, StartAndDetachThread)
 
 TEST(ThreadTest, StartAndDetachThreadAndSetValueByReference)
 {
-    int mainThreadId = Runtime::System::GetCurrentThreadId();
+    UI64 mainThreadId = Runtime::System::GetCurrentThreadId();
     int result = 1;
     Runtime::Parallel::Thread worker{[](int& result)
                                      {
@@ -117,7 +117,7 @@ TEST(ThreadTest, StartAndDetachThreadAndSetValueByReference)
 
 TEST(ThreadTest, StartThreadAndAutoJoin)
 {
-    int mainThreadId = Runtime::System::GetCurrentThreadId();
+    UI64 mainThreadId = Runtime::System::GetCurrentThreadId();
     int result = 1;
     Runtime::Parallel::Thread worker{[](int& result)
                                      {

@@ -20,7 +20,7 @@ namespace Runtime::Parallel
             RUNTIME_UNLIKELY
             {
                 RUNTIME_ASSERT(((mask_ & (1 << core)) != 0));
-                res = -1;
+                res = 0;
                 return *this;
             }
         else

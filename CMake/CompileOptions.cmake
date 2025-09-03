@@ -31,6 +31,7 @@ function(SetCompileOptions)
                             /external:W0
                             /analyze:WX-
                             /Zi
+                            /fp:fast
         )
         if (MYTHIC_ENGINE_USE_PROFILE)
             message(STATUS "Using profile for PGO")

@@ -59,7 +59,7 @@ namespace Runtime::System::Windows
         }
 
         MINIDUMP_EXCEPTION_INFORMATION exceptionParam;
-        exceptionParam.ThreadId = GetCurrentThreadId();
+        exceptionParam.ThreadId = static_cast<DWORD>(GetCurrentThreadId());
         exceptionParam.ExceptionPointers = reinterpret_cast<PEXCEPTION_POINTERS>(pExceptionInfo);
         exceptionParam.ClientPointers = FALSE;
         BOOL result = hMiniDumpWriteDumpFunc(
@@ -176,7 +176,7 @@ namespace Runtime::System::Windows
                 {
                     processInfoHelper->physicalCoresProcessCount++;
                     processInfoHelper->logicalCoresProcessCount +=
-                        static_cast<int>(_mm_popcnt_u64(static_cast<unsigned long long>(pBuffer->ProcessorMask)));
+                        static_cast<UI16>(_mm_popcnt_u64(static_cast<unsigned long long>(pBuffer->ProcessorMask)));
                     break;
                 }
             case RelationNumaNode:
@@ -198,7 +198,7 @@ namespace Runtime::System::Windows
                     processInfoHelper->caches[processInfoHelper->cachesCount - 1].associativity = Cache->Associativity;
                     processInfoHelper->caches[processInfoHelper->cachesCount - 1].lineSize = Cache->LineSize;
                     processInfoHelper->caches[processInfoHelper->cachesCount - 1].size = Cache->Size;
-                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].type = Cache->Type;
+                    processInfoHelper->caches[processInfoHelper->cachesCount - 1].type = static_cast<UI8>(Cache->Type);
                     processInfoHelper->l1CachesCount += Cache->Level == 1;
                     processInfoHelper->l2CachesCount += Cache->Level == 2;
                     processInfoHelper->l3CachesCount += Cache->Level == 3;
@@ -243,7 +243,7 @@ namespace Runtime::System::Windows
 
     RUNTIME_API void SetThreadPriority(void* handle, ThreadPriority priority)
     {
-        UI32 nPriority = 0;
+        Int32 nPriority = 0;
         switch (priority)
         {
         case ThreadPriority::ModeBackgroundBegin:
