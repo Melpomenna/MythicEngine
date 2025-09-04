@@ -6,6 +6,7 @@
  */
 
 #include "Config.h"
+#include "Types.h"
 
 /**
  * @namespace Runtime::Parallel
@@ -30,7 +31,7 @@ namespace Runtime::System::Windows
      * @brief Sets a handler for unhandled exceptions.
      * @param pUnhandledExceptionHandler Pointer to the exception handler function.
      */
-    RUNTIME_API void SetUnhandledExceptionHandler(void (*pUnhandledExceptionHandler)(void*));
+    RUNTIME_API void SetUnhandledExceptionHandler(UnhandledHandler handler);
 
     /**
      * @brief Generates a dump file for the given exception information.

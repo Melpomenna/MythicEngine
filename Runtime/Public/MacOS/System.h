@@ -6,6 +6,15 @@
  */
 
 #include "Config.h"
+#include "Types.h"
+#include "client/crashpad_client.h"
+#include "client/crashpad_info.h"
+#include "client/simple_string_dictionary.h"
+#include "client/simulate_crash.h"
+
+//TODO: удалить после тестов, изменить место объявления
+crashpad::CrashpadClient client;
+extern crashpad::SimpleStringDictionary global_annotations;
 
 /**
  * @namespace Runtime::Parallel
@@ -30,7 +39,7 @@ namespace Runtime::System::MacOS
      * @brief Sets a handler for unhandled exceptions.
      * @param pUnhandledExceptionHandler Pointer to the exception handler function.
      */
-    RUNTIME_API void SetUnhandledExceptionHandler(void (*pUnhandledExceptionHandler)(void*));
+    RUNTIME_API void SetUnhandledExceptionHandler(UnhandledHandler handler);
 
     /**
      * @brief Generates a dump file for the given exception information.

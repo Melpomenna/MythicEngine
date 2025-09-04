@@ -48,7 +48,8 @@ namespace Runtime
 
         consoleLogger->set_log_level(quill::v10::LogLevel::Debug);
         fileLogger->set_log_level(quill::v10::LogLevel::TraceL3);
-
+        // TODO: Сделать реализацию под Мак
+        #if defined(_WIN32) || defined(_WIN64)
         System::SetUnhandledExceptionHandler(
             [](void* handlerStruct)
             {
@@ -58,6 +59,7 @@ namespace Runtime
                 RUNTIME_CONSOLE_LOG_CRITICAL(StaticString::SystemHandleExceptionMessage, std::string_view{stackTrace});
                 System::GenerateDump(handlerStruct);
             });
+        #endif
 
         System::SetPureVirtualCallHandler(
             []()
