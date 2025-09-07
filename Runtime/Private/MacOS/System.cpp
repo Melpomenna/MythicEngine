@@ -1,6 +1,10 @@
 #include <MacOS/System.h>
 #include <signal.h>
-#include <string.h>
+#include <exception> 
+#include "ThreadHelper.h"
+
+#include <pthread.h>
+#include <cstdint>
 
 #include <unistd.h>
 
@@ -29,59 +33,32 @@ namespace Runtime::System::MacOS{
       sigaction(SIGFPE,  &sa, nullptr);
       sigaction(SIGABRT, &sa, nullptr);
   }
+  #if 0
+  void SetPureVirtualCallHandler(void (*pPureCallHandler)()){
+        std::set_terminate(pPureCallHandler);
+    }
+  #endif
 
-  void GenerateDump(void* pExceptionInfo)
-  {
-    crashpad::CrashpadInfo::GetCrashpadInfo()->set_simple_annotations(&global_annotations);
+  void* CreateThread(Runtime::Parallel::ThreadOptionsHelper& refThreadOptions)
+    {
+      pthread_attr_t attr;
+      pthread_attr_init(&attr);
 
-    global_annotations.SetKeyValue("PID", std::to_string(getpid()).c_str());
-    global_annotations.SetKeyValue("TIME", GetCurrentTimeString());
-    global_annotations.SetKeyValue("EXCEPTION", "Здесь как то нужно указать тип исключения");
+      if (refThreadOptions.stackSize > 0) {
+          pthread_attr_setstacksize(&attr, refThreadOptions.stackSize);
+      }
 
-    
-    CRASHPAD_SIMULATE_CRASH();
-  }
+      int res = pthread_create(
+          &refThreadOptions.threadId,
+          &attr,
+          refThreadOptions.startAddress,
+          refThreadOptions.paramsAddress
+      );
 
-  // эта функция должна вызваться только раз в начале начал))
-  void StartClientForDump()
-  {
-    //TODO: указать правильные пути
-    base::FilePath handler("../../Public/crashpad/out/Default/crashpad_handler");
-    base::FilePath db("crashpad_db");
-    base::FilePath metrics("crashpad_metrics");
+      pthread_attr_destroy(&attr);
+      //незнаю что тут вернуть 
+      return nullptr;
+    }
 
-    std::map<std::string, std::string> annotations;
-    annotations["name"] = "MythicEngine";
-    annotations["version"] = "1.0.0";
-
-    bool success = client.StartHandler(
-        handler,
-        db,
-        metrics,
-        "", // тут можно указать свой сервак, но я не знаю какой
-        annotations, //для доп инфы, я указал просто имя проекта и типо версию
-        {}, // тут можно указывать разные флаги для гибкости (указал их ниже)
-        true, //restartable если хендлер крашит, то он перезапуститься 
-        false //asynchronous_start это для многопоточности 
-    );
-
-    /*
-    --database=<path> → путь до базы дампов
-    --metrics-dir=<path> → путь до метрик
-    --url=<server_url> → куда отправлять отчёты
-    --no-upload → чтобы не отправлять дампы на сервер
-    --no-rate-limit → снять ограничение на частоту отправки
-    --monitor-self → включить мониторинг самого handler’а
-    */
-  }
-
-  static char *GetCurrentTimeString()
-  {
-      time_t now = time(0);
-      char* dt = ctime(&now);
-      return dt;
-  }
-
-  
 
 }

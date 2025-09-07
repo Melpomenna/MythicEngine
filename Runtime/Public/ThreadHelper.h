@@ -17,17 +17,24 @@ namespace Runtime::Parallel
      * Contains parameters for thread start address, stack size, thread ID,
      * suspension state, and auto-join behavior.
      */
-    struct ThreadOptionsHelper final
-    {
-        /// Function pointer type for thread start routine.
+struct ThreadOptionsHelper final
+{
+    #if defined(_WIN32) || defined(_WIN64)
         using StartAddressFuncType = unsigned long(__stdcall*)(void*);
-        StartAddressFuncType startAddress{nullptr}; ///< Pointer to thread start function.
-        void* paramsAddress{nullptr}; ///< Pointer to parameters for the thread function.
-        unsigned long long stackSize{0}; ///< Stack size for the thread.
-        unsigned long threadId{0}; ///< Thread identifier.
-        bool isSuspendedOnStart{false}; ///< If true, thread starts suspended.
-        bool enableAutoJoin{false}; ///< If true, thread will auto-join on destruction.
-    };
+        using ThreadIdType = unsigned long; 
+    #else
+        using StartAddressFuncType = void*(*)(void*);
+        using ThreadIdType = pthread_t;     
+    #endif
+
+    StartAddressFuncType startAddress{nullptr}; ///< Pointer to thread start function.
+    void* paramsAddress{nullptr};              ///< Pointer to parameters for the thread function.
+    unsigned long long stackSize{0};           ///< Stack size for the thread.
+    ThreadIdType threadId{};                   ///< Thread identifier.
+    bool isSuspendedOnStart{false};            ///< If true, thread starts suspended (ignored on POSIX).
+    bool enableAutoJoin{false};                ///< If true, thread will auto-join on destruction.
+};
+
 
     /**
      * @class Thread

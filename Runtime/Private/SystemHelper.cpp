@@ -1,26 +1,35 @@
 #include "SystemHelper.h"
 #include "Windows/System.h"
+#include <MacOS/System.h>
 
 namespace Runtime::System
 {
-    void SetUnhandledExceptionHandler(void (*unhandledExceptionHandler)(void*))
+    void SetUnhandledExceptionHandler(UnhandledHandler handler)
     {
-        Windows::SetUnhandledExceptionHandler(unhandledExceptionHandler);
+        Windows::SetUnhandledExceptionHandler(handler);
     }
 
     void GenerateDump(void* exceptionInfo)
     {
+        #if defined(_WIN32) || defined(_WIN64)
         Windows::GenerateDump(exceptionInfo);
+        #endif
     }
 
     void SetPureVirtualCallHandler(void (*pureVirtualCallHandler)())
     {
+        #if defined(_WIN32) || defined(_WIN64)
         Windows::SetPureVirtualCallHandler(pureVirtualCallHandler);
+        #else
+        MacOS::SetPureVirtualCallHandler(pureVirtualCallHandler);
+        #endif
     }
 
     void SetThreadAffinityMask(void* thread, unsigned int mask)
     {
+        #if defined(_WIN32) || defined(_WIN64)
         Windows::SetThreadAffinityMask(thread, mask);
+        #endif
     }
 
     void EnableLFHHeap()

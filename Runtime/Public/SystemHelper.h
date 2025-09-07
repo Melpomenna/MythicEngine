@@ -33,7 +33,7 @@ namespace Runtime::System
      * @brief Sets the handler for unhandled exceptions.
      * @param unhandledExceptionHandler Pointer to the exception handler function.
      */
-    RUNTIME_API void SetUnhandledExceptionHandler(void (*unhandledExceptionHandler)(void*));
+    RUNTIME_API void SetUnhandledExceptionHandler(UnhandledHandler handler);
 
     /**
      * @brief Generates a dump file for the given exception information.
