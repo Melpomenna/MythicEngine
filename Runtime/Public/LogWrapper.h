@@ -11,7 +11,9 @@
 #pragma once
 
 #include <string_view>
-#include "QuillLoggerHelper.h"
+#if defined(_WIN32) || defined(_WIN64)
+    #include "QuillLoggerHelper.h"
+#endif
 #include "StaticString.h"
 
 /**

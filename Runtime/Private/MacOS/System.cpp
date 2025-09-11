@@ -2,6 +2,7 @@
 #include <signal.h>
 #include <exception> 
 #include "ThreadHelper.h"
+#include "LogWrapper.h"
 
 #include <pthread.h>
 #include <cstdint>
@@ -59,6 +60,44 @@ namespace Runtime::System::MacOS{
       //незнаю что тут вернуть 
       return nullptr;
     }
+
+  void JoinThread(void* thread)
+  {
+    pthread_t* t = static_cast<pthread_t*>(thread);
+    pthread_join(*t, nullptr);
+    delete t;                  
+  }
+  void DetachThread(void* thread)
+  {
+    pthread_t* t = static_cast<pthread_t*>(thread);
+    pthread_detach(*t);
+    delete t;
+  }
+
+void YieldThread()
+{
+  if (sched_yield() != 0)
+  {
+      RUNTIME_LOG_CRITICAL(LogHelper::FileLoggerName, StaticString::FailedToSwitchThreadMessage);
+      RUNTIME_CONSOLE_LOG_CRITICAL(StaticString::FailedToSwitchThreadMessage);
+  }
+}
+
+unsigned long GetCurrentThreadId()
+{
+  uint64_t tid;
+  pthread_threadid_np(nullptr, &tid); // nullptr = текущий поток
+  return static_cast<unsigned long>(tid);
+}
+
+void YieldCurrentProcessor()
+{
+  #if defined(__x86_64__) || defined(__i386__)
+    __builtin_ia32_pause(); 
+  #elif defined(__aarch64__) || defined(__arm__)
+    __builtin_arm_yield();  
+  #endif
+}
 
 
 }
